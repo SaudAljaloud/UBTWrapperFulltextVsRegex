@@ -1,0 +1,30 @@
+#
+# Sesame configuration template for a owlim repository
+#
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix rep: <http://www.openrdf.org/config/repository#>.
+@prefix sr: <http://www.openrdf.org/config/repository/sail#>.
+@prefix sail: <http://www.openrdf.org/config/sail#>.
+@prefix owlim: <http://www.ontotext.com/trree/owlim#>.
+
+[] a rep:Repository ;
+   rep:repositoryID "lubm" ;
+   rdfs:label "Lehigh University Benchmark Repository" ;
+   rep:repositoryImpl [
+      rep:repositoryType "openrdf:SailRepository" ;
+      sr:sailImpl [
+         sail:sailType "owlim:Sail" ;
+       	 owlim:repository-type "file-repository" ;
+         owlim:ruleset "owl-horst-optimized" ; 
+         owlim:entity-index-size "5000000" ; 
+         owlim:cache-memory "180m" ; 
+         owlim:noPersist "false" ;
+		 owlim:ftsIndexPolicy "onCommit" ;
+		 owlim:fts-memory "20m" ;
+		 owlim:ftsLiteralsOnly "true" ;
+         owlim:storage-folder "owlim-storage" ;
+	     owlim:base-URL "http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#" ;
+	     owlim:imports "univ-bench.owl;" ;
+	     owlim:defaultNS "http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#;"
+      ]
+   ].

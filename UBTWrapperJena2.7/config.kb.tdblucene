@@ -1,0 +1,19 @@
+# [repository ID]
+# class=<repository factory class>
+# data=<directory where the test data reside>
+# database=<database where the data are stored>
+# ontology=<url of univ-bench ontology> 
+
+# 1 university
+[JENA_TDB_1]
+class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
+data=/Users/user/BenchmarkingFromHome/Data/
+database=LUBM-fulltext-1New-Version
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 5 universities
+#[JENA_TDB_5]
+#class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
+#data=../LUBM/LUBM-fulltext-5
+#database=LUBM-fulltext-5
+#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl

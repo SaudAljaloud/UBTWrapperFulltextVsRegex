@@ -1,0 +1,1 @@
+./run_ubt_Owlim.sh load config.kb.Owlim

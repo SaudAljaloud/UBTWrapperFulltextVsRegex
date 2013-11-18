@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>comorg.openrdf</groupId>
+  <artifactId>org.openrdf.rio</artifactId>
+  <versioning>
+    <release>2.2.1</release>
+    <versions>
+      <version>2.2.1</version>
+    </versions>
+    <lastUpdated>20131002201943</lastUpdated>
+  </versioning>
+</metadata>

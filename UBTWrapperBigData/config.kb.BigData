@@ -1,0 +1,41 @@
+# [repository ID]
+# class=<repository factory class>
+# data=<directory where the test data reside>
+# database=<database where the data are stored>
+# ontology=<url of univ-bench ontology> 
+
+# 1 university
+[BigData_1]
+class=saud.ubt.wrapper.BigData.BigDataFactory
+data=/Users/saudaljaloud/Benchmarking/Data/
+database=LUBM-fulltext-1
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 5 universities
+#[SESAME_LUCENESAIL_NATIVE_5]
+#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+#data=../LUBM/LUBM-fulltext-5
+#database=LUBM-fulltext-5
+#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 10 universities
+#[SESAME_LUCENESAIL_NATIVE_10]
+#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+#data=../LUBM/LUBM-fulltext-10
+#database=LUBM-fulltext-10
+#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 50 universities
+#[SESAME_LUCENESAIL_NATIVE_50]
+#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+#data=../LUBM/LUBM-fulltext-50
+#database=LUBM-fulltext-50
+#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 100 universities
+#[SESAME_LUCENESAIL_NATIVE_100]
+#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+#data=../LUBM/LUBM-fulltext-100
+#database=LUBM-fulltext-100
+#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+

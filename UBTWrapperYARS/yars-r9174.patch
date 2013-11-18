@@ -1,0 +1,58 @@
+Index: /home/minack/eclipse-workspace/yars/build.xml
+===================================================================
+--- /home/minack/eclipse-workspace/yars/build.xml	(revision 17226)
++++ /home/minack/eclipse-workspace/yars/build.xml	(working copy)
+@@ -11,7 +11,7 @@
+   <property name="build" value="build"/>
+   <property name="dist" value="dist"/>
+   <property name="javadoc" value="doc/javadoc"/>
+-  <property name="tomcat.home"   value="/usr/share/tomcat5/"/>
++  <property name="tomcat.home"   value="/usr/share/tomcat5.5/"/>
+   <property name="javacc.home"   value="C:/Programme/Java/javacc-4.0"/>
+ 	
+   <path id="classpath">
+@@ -72,6 +72,7 @@
+   <target name="build" depends="prepare">
+     <javac destdir="${build}"
+            srcdir="${src}"
++           target="1.5"
+ 	   debug="yes">
+       <classpath refid="classpath"/>
+     </javac>
+@@ -88,7 +89,7 @@
+ 
+   <target name="clean">
+     <delete dir="${build}"/>
+-    <delete>
++    <delete failonerror="false">
+       <fileset dir="${dist}">
+ 	<include name="*"/>
+       </fileset>
+Index: /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/exec/local/KeywordIterator.java
+===================================================================
+--- /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/exec/local/KeywordIterator.java	(revision 17226)
++++ /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/exec/local/KeywordIterator.java	(working copy)
+@@ -31,7 +31,7 @@
+ 	// the iterator from lucene
+ 	private Iterator _it;
+ 	// if score is less than limit don't return anything (too many results)
+-	public static final float LIMIT = 0.5f;
++	public static final float LIMIT = 0.0f;
+ 	
+ 	// logging
+     private static Logger _log = Logger.getLogger("org.semanticweb.yars.engine.exec.KeywordIterator");
+Index: /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/Relational2Exec.java
+===================================================================
+--- /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/Relational2Exec.java	(revision 17226)
++++ /home/minack/eclipse-workspace/yars/src/org/semanticweb/yars/engine/Relational2Exec.java	(working copy)
+@@ -232,8 +232,8 @@
+ 		// be made here (e.g. constructing the template, constructing the
+ 		// mapping etc.
+ 		
+-		System.out.println("bound variables " + _boundvars);
+-		System.out.println("select variables " + _selectvars);
++//		System.out.println("bound variables " + _boundvars);
++//		System.out.println("select variables " + _selectvars);
+ 		
+ 		if (_resultformat == PROJECT || _resultformat == PROJECTFILTER) {
+ 			// mapping has a mapping from the _variables to the select specification

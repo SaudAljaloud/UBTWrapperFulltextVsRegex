@@ -18,7 +18,6 @@ public class BigDataAbstractRepository extends
 
 	
 	public BigDataAbstractRepository(){
-		super.provideFulltext();
 	}
 	
 	@Override

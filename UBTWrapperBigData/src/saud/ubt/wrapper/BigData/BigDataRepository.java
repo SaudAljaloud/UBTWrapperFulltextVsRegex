@@ -2,7 +2,7 @@ package saud.ubt.wrapper.BigData;
 
 import java.io.File;
 
-import org.apache.log4j.BasicConfigurator;
+//import org.apache.log4j.BasicConfigurator;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
@@ -31,7 +31,7 @@ public abstract class BigDataRepository implements
 	protected String ontology;
 
 	protected void setUp() {
-		BasicConfigurator.configure();
+//		BasicConfigurator.configure();
 		this.repo = createRepository();
 	}
 
@@ -105,7 +105,6 @@ public abstract class BigDataRepository implements
 					this.conn.add(file, this.ontology, RDFFormat.RDFXML);
 					this.conn.commit();
 				} catch (Exception e) {
-					System.out.println("error");
 					log.error(
 							"could not load data from file '" + file.getName()
 									+ "' as '" + format.toString() + "'", e);
@@ -123,7 +122,7 @@ public abstract class BigDataRepository implements
 	public void open(String database) {
 		log.debug("opening repository with database '{}'", database);
 		
-		
+		this.provideFulltext();
 		try {
 			this.repo.initialize();
 			this.conn = this.repo.getConnection();
@@ -154,7 +153,6 @@ public abstract class BigDataRepository implements
 	}
 
 	public void setOntology(String ontology) {
-		System.out.println("set ontology");
 		this.ontology = ontology;
 	}
 

@@ -1,1 +1,1 @@
-java -Xmx512m -Djava.util.logging.config.file=etc/jdk14.properties -cp ../UBT/ubt.jar:ubtwrapper-virtuoso-5.0.9.jar:lib/virtjdbc3.jar:lib/slf4j-api-1.5.0.jar:lib/slf4j-jdk14-1.5.0.jar edu.lehigh.swat.bench.ubt.Test $1 $2 $3
+java -Xmx512m -Djava.util.logging.config.file=etc/jdk14.properties -cp target/UBTWrapperVirtuoso5.0-0.0.1.jar:target/dependency/*:$CLASSPATH edu.lehigh.swat.bench.ubt.Test $1 $2 $3

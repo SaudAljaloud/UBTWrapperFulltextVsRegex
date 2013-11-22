@@ -5,7 +5,7 @@
 # ontology=<url of univ-bench ontology> 
 
 # 1 university
-[Owlim_LUCENESAIL_NATIVE_1]
+[Owlim_SE_1]
 class=saud.ubt.wrapper.Owlim.OwlimFactory
 data=../../Data/
 database=LUBM-fulltext-1

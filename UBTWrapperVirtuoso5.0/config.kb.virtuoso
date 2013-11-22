@@ -5,7 +5,7 @@
 # ontology=<url of univ-bench ontology> 
 
 # 1 university
-[VIRTUOSO_1]
+[VIRTUOSO5.0.9_1]
 class=de.l3s.ubt.wrapper.virtuoso5.VirtuosoFactory
 data=../../Data/
 database=LUBM-fulltext-1

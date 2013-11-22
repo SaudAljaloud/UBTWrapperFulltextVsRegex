@@ -5,7 +5,7 @@
 # ontology=<url of univ-bench ontology> 
 
 # 1 university
-[SESAME_LUCENESAIL_NATIVE_1]
+[SESAME2.7_LUCENESAIL_NATIVE_1]
 class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
 data=../../Data/
 database=LUBM-fulltext-1

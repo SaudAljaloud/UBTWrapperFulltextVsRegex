@@ -5,7 +5,7 @@
 # ontology=<url of univ-bench ontology> 
 
 # 1 university
-[JENA_TDB_1]
+[JENA2.5_TDB_1]
 class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
 data=../../Data/
 database=LUBM-fulltext-1

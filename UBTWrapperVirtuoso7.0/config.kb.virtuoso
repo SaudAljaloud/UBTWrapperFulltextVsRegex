@@ -7,7 +7,7 @@
 # 1 university
 [VIRTUOSO_1]
 class=de.l3s.ubt.wrapper.virtuoso5.VirtuosoFactory
-data=/Users/saudaljaloud/Benchmarking/Data/
+data=../../Data/
 database=LUBM-fulltext-1
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 

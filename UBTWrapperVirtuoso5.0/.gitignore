@@ -1,2 +1,7 @@
 /target
 /virtuoso
+virtuoso-temp.db
+virtuoso.db
+virtuoso.log
+virtuoso.pxa
+virtuoso.trx

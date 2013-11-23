@@ -25,7 +25,8 @@ public class Query {
   /** original string */
   private String string_ = "";
   /** list of conjunctive atoms */
-  private Vector atoms_ = new Vector(); //Atom
+  @SuppressWarnings("rawtypes")
+private Vector atoms_ = new Vector(); //Atom
 
   /**
    * Constructor.
@@ -37,7 +38,8 @@ public class Query {
    * Gets the constituent atoms.
    * @return List of atoms in this query.
    */
-  public Vector getAtoms() {
+  @SuppressWarnings("rawtypes")
+public Vector getAtoms() {
     return atoms_;
   }
 
@@ -46,7 +48,8 @@ public class Query {
    * @param predicate Name of the atom's predicate
    * @param args List of the atom's arguments
    */
-  public void addAtom(String predicate, String[] args) {
+  @SuppressWarnings("unchecked")
+public void addAtom(String predicate, String[] args) {
     Atom atom;
     atom = new Atom(predicate, args);
     atoms_.addElement(atom);

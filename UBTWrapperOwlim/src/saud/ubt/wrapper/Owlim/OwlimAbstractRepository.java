@@ -18,15 +18,14 @@ import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.manager.LocalRepositoryManager;
 import org.openrdf.repository.manager.RepositoryInfo;
 import org.openrdf.repository.manager.RepositoryManager;
-import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParser;
 import org.openrdf.rio.Rio;
 
-import com.ontotext.trree.OwlimSchemaRepository;
 
+@SuppressWarnings("deprecation")
 public class OwlimAbstractRepository extends OwlimRepository {
 
 //	private final static File ROOT_DATA_DIR = new File("Owlim-repositories");

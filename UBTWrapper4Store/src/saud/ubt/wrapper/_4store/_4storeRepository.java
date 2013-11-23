@@ -120,6 +120,7 @@ public class _4storeRepository implements
 			Process proc = new ProcessBuilder("/bin/bash",
 					"-c", "pkill", "-f", "'^" + DATABASE_BACKEND + " " + this.database + "$'").start();
 
+			proc.waitFor();
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

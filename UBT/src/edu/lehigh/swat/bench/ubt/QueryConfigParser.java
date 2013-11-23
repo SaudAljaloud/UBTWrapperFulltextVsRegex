@@ -19,7 +19,6 @@
 
 package edu.lehigh.swat.bench.ubt;
 
-import java.io.*;
 import java.util.*;
 
 public class QueryConfigParser
@@ -34,7 +33,8 @@ public class QueryConfigParser
   /** QuerySpecification object representing the current section */
   private QuerySpecification query_ = null;
   /** list of queries */
-  private Vector queryList_;
+  @SuppressWarnings("rawtypes")
+private Vector queryList_;
 
   /**
    * constructor
@@ -48,7 +48,8 @@ public class QueryConfigParser
    * @return The created query list.
        * @throws java.lang.Exception if there are IO errors or syntax/content errors.
    */
-  public Vector createQueryList(String fileName) throws Exception {
+  @SuppressWarnings("rawtypes")
+public Vector createQueryList(String fileName) throws Exception {
     queryList_ = new Vector();
     parse(fileName);
     return queryList_;
@@ -123,7 +124,8 @@ public class QueryConfigParser
   /**
    * Wraps up the previous section.
    */
-  private void endPrevSection() {
+  @SuppressWarnings("unchecked")
+private void endPrevSection() {
     if (query_ != null) {
       queryList_.add(query_);
     }

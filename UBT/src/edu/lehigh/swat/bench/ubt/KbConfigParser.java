@@ -19,7 +19,6 @@
 
 package edu.lehigh.swat.bench.ubt;
 
-import java.io.*;
 import java.util.*;
 
 public class KbConfigParser
@@ -38,7 +37,8 @@ public class KbConfigParser
   /** KbSpecification object representing the current section */
   private KbSpecification kb_ = null;
   /** list of target systems */
-  private Vector kbList_;
+  @SuppressWarnings("rawtypes")
+private Vector kbList_;
   /** flags whether the target system is memory-based or not */
   private boolean isMemory_;
 
@@ -54,7 +54,8 @@ public class KbConfigParser
    * @return The created target system list.
    * @throws java.lang.Exception if there are IO errors or syntax/content errors.
    */
-  public Vector createKbList(String fileName, boolean isMemory) throws Exception {
+  @SuppressWarnings("rawtypes")
+public Vector createKbList(String fileName, boolean isMemory) throws Exception {
     isMemory_ = isMemory;
     kbList_ = new Vector();
     parse(fileName);
@@ -129,7 +130,8 @@ public class KbConfigParser
    * Wraps up the previous section.
    * @throws java.lang.Exception when a supposed section is incomplete in content.
    */
-  void endPrevSection() throws Exception {
+  @SuppressWarnings("unchecked")
+void endPrevSection() throws Exception {
     if (kb_ != null) {
       if (null == kb_.kbClass_) {
         error("Missing repository factory class information!");

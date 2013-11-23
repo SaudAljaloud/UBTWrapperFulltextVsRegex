@@ -38,8 +38,10 @@ public class Test extends RepositoryCreator {
 	private static final Integer MAX_DURATION = 100000;
 
 	/** list of target systems */
+	@SuppressWarnings("rawtypes")
 	private Vector kbList_; // KbSpec
 	/** list of test queries */
+	@SuppressWarnings("rawtypes")
 	private Vector queryList_; // QuerySpec
 	/** list of test query ids that shall not be executed anymore */
 	private List<Integer> prunedQueries_ = new ArrayList<Integer>();
@@ -195,6 +197,7 @@ public class Test extends RepositoryCreator {
 	/**
 	 * Conducts the loading test.
 	 */
+	@SuppressWarnings("unchecked")
 	private void doTestLoading() {
 		KbSpecification kb;
 		Date startTime, endTime;

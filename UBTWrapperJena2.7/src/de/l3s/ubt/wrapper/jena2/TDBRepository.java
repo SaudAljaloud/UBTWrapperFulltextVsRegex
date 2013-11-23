@@ -12,6 +12,7 @@ public class TDBRepository extends PersistentRepository {
 		return super.getName() + "-tdb";
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Model createModel(String... names) {
 		// build up the path again

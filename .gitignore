@@ -1,7 +1,8 @@
 .DS_Store
 target/
-.project
 /.settings
 .classpath
 /.svn
 /sesame-repositories
+.metadata
+.settings

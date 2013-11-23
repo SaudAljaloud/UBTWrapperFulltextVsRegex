@@ -1,4 +1,4 @@
-package de.l3s.ubt.wrapper.virtuoso5;
+package de.l3s.ubt.wrapper.virtuoso7;
 
 import java.io.BufferedReader;
 import java.io.IOException;

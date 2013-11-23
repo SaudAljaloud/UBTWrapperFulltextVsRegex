@@ -1,4 +1,4 @@
-package de.l3s.ubt.wrapper.virtuoso5;
+package de.l3s.ubt.wrapper.virtuoso7;
 
 import edu.lehigh.swat.bench.ubt.api.Repository;
 import edu.lehigh.swat.bench.ubt.api.RepositoryFactory;

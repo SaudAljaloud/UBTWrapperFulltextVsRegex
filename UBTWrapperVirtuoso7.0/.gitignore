@@ -5,3 +5,4 @@ virtuoso.db
 virtuoso.log
 virtuoso.pxa
 virtuoso.trx
+virtuoso.lck

@@ -272,8 +272,9 @@ public class TestBigDataFullText {
 					"prefix bd: <http://www.bigdata.com/rdf/search#>\n" + 
 					"SELECT ?X\n" + 
 					"WHERE {\n" + 
-					"  ?lit bd:search \"engineer\" .\n" + 
-					"  ?X ?p ?lit .\n" + 
+					"  ?lit bd:search \" network engineer \" .\n" + 
+					"  ?lit bd:matchExact \"true\" .\n" + 
+					"  ?X ub:publicationText ?lit .\n" + 
 					"}";
 			// t1.flushFSCache();
 			Date startTime, endTime;

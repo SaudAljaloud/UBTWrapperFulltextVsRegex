@@ -1,0 +1,14 @@
+BigData Indexing Notes:
+
+It seems that BigDat is using toknisation for the text index. When searching for a query like:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "network engineer" .
+  ?lit bd:matchExact "true" .
+  ?X ub:publicationText ?lit .
+}
+
+This will return 6 results, unliek others wich return only 3. When checking the text, it seems that text like "network engineering" are return, which indicates that the tokinsation is presented.

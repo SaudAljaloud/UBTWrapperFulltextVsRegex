@@ -68,12 +68,13 @@ WHERE {
 
 [lubm-fulltext-4]
 # All resources that match the phrase 'network engineer' in property 'ub:publicationText'. There are three such results in LUBMft(1).
+# Unlike other stores, BigData will return 6 results when searching "network engineer", where results like "network engineering" will be returned. however, for the consistency with other stores, it's been added a space before and after " network engineer ". This works for this dataset, however, for others, if a "network engineer" is at the start or the end, it won't match.
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 prefix bd: <http://www.bigdata.com/rdf/search#>
 SELECT ?X
 WHERE {
-  ?lit bd:search "network engineer" .
+  ?lit bd:search " network engineer " .
   ?lit bd:matchExact "true" .
   ?X ub:publicationText ?lit .
 }

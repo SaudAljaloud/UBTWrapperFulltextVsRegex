@@ -367,7 +367,7 @@ public class TestOwlimSELUBM {
 		// TODO Auto-generated method stub
 		BasicConfigurator.configure();
 		TestOwlimSELUBM t1 = new TestOwlimSELUBM();
-		String op = "load";
+		String op = "";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
 		t1.provideFulltext();
 

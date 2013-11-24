@@ -248,12 +248,12 @@ public class TestSesame2_2 {
 		BasicConfigurator.configure();
 
 		TestSesame2_2 t1 = new TestSesame2_2();
-		String op = "";
+		String op = "load";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
 		t1.provideFulltext("spoc posc ospc");
 		t1.open("saud");
 		if (op.equals("load")) {
-			if (t1.load("/Users/saudaljaloud/Benchmarking/Data/"))
+			if (t1.load("../../Data/"))
 				t1.close();
 		} else {
 			String q1 = "";

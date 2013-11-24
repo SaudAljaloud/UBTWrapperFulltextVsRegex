@@ -194,9 +194,9 @@ public class Test4Store {
 		// TODO Auto-generated method stub
 		Test4Store t1 = new Test4Store();
 		String op = "";
-		
+
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
-		
+
 		if (args.length > 0) {
 			String databaseName = args[1];
 			t1.open(databaseName);
@@ -224,9 +224,9 @@ public class Test4Store {
 				System.err
 						.println("Make sure of the argument: laod or query, then a name for the dataabse");
 			}
-		}
-		else{
-			System.err.println("Add an argument: laod or query, then a name for the dataabse");
+		} else {
+			System.err
+					.println("Add an argument: laod or query, then a name for the dataabse");
 		}
 	}
 

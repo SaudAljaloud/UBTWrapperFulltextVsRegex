@@ -1,4 +1,4 @@
-package de.l3s.ubt.wrapper.virtuoso7.Test;
+package de.l3s.ubt.wrapper.virtuoso5.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.l3s.ubt.wrapper.virtuoso7.InputStreamLoggerThread;
-import de.l3s.ubt.wrapper.virtuoso7.VirtuosoRepository;
+import de.l3s.ubt.wrapper.virtuoso5.InputStreamLoggerThread;
+import de.l3s.ubt.wrapper.virtuoso5.VirtuosoRepository;
 
-public class TestVirtuoso7 {
+public class TestVirtuoso5 {
 
 	/**
 	 * @param args
@@ -342,7 +342,7 @@ public class TestVirtuoso7 {
 		// TODO Auto-generated method stub
 		// BasicConfigurator.configure();
 		
-		TestVirtuoso7 t1 = new TestVirtuoso7();
+		TestVirtuoso5 t1 = new TestVirtuoso5();
 		String op = "";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
 		t1.open("LUBM-fulltext-1");

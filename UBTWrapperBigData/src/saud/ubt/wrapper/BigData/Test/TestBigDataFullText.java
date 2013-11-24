@@ -253,7 +253,7 @@ public class TestBigDataFullText {
 		t1.open("");
 		
 		if (op.equals("load")) {
-			if (t1.load("/Users/saudaljaloud/Benchmarking/Data/"))
+			if (t1.load("../../Data/"))
 				t1.close();
 		} else {
 			

@@ -375,7 +375,7 @@ public class TestOwlimSELUBM {
 		t1.open("");
 		
 		if (op.equals("load")) {
-			if (t1.load("/Users/saudaljaloud/Benchmarking/Data/"))
+			if (t1.load("../../Data/"))
 				t1.close();
 		} else {
 			String q5 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 

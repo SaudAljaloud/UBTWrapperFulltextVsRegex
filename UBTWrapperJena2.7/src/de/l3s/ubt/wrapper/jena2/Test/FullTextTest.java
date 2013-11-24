@@ -6,27 +6,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.query.larq.IndexBuilderModel;
-import com.hp.hpl.jena.query.larq.IndexBuilderString;
-import com.hp.hpl.jena.query.larq.IndexLARQ;
-import com.hp.hpl.jena.query.larq.LARQ;
+import org.apache.jena.larq.IndexBuilderModel;
+import org.apache.jena.larq.IndexBuilderString;
+import org.apache.jena.larq.IndexLARQ;
+import org.apache.jena.larq.LARQ;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.util.FileManager;
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class FullTextTest {
 
@@ -104,7 +105,7 @@ public class FullTextTest {
 			// if there is no index yet, create one
 			if (this.index == null) {
 				try {
-					Directory dir = FSDirectory.getDirectory(getFulltextDir());
+					Directory dir = FSDirectory.open(getFulltextDir());
 					this.index = new IndexLARQ(IndexReader.open(dir));
 					LARQ.setDefaultIndex(this.index);
 				} catch (IOException e) {
@@ -122,12 +123,12 @@ public class FullTextTest {
 			Query q = QueryFactory.create(query);
 			QueryExecution qe = QueryExecutionFactory.create(q, model);
 			QueryExecution qe2 = QueryExecutionFactory.create(q, model);
-			ResultSet rs = qe.execSelect();
 			ResultSet rs2 = qe2.execSelect();
+			ResultSet rs = qe.execSelect();
 			ResultSetFormatter.out(System.out, rs) ;
 			while(rs2.hasNext() && rs2.next()!=null) totalno++;
 			
-			System.out.println("No of Result: " + totalno);
+			System.out.println("No of Results: " + totalno);
 		} catch (Exception e) {
 			log.error("could not query repostiory", e);
 
@@ -266,6 +267,7 @@ public class FullTextTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		BasicConfigurator.configure();
+
 		FullTextTest t1 = new FullTextTest();
 		String op = "";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
@@ -278,28 +280,34 @@ public class FullTextTest {
 			String q1 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
 					"PREFIX arq: <http://jena.hpl.hp.com/ARQ/property#>\n" + 
-					"SELECT ?X ?score\n" + 
+					"SELECT ?X\n" + 
 					"WHERE {\n" + 
-					"  (?lit ?score) arq:textMatch (\"network\" 0.75) .\n" + 
-					"  ?X ub:publicationText ?lit .\n" + 
+					"  ?lit arq:textMatch \"network\" .\n" + 
+					"  ?X ?p ?lit .\n" + 
 					"}";
 			String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
-					"PREFIX arq: <http://jena.hpl.hp.com/ARQ/property#>\n" + 
 					"SELECT ?X\n" + 
 					"WHERE {\n" + 
-					"  ?lit arq:textMatch \"engineer\" .\n" + 
 					"  ?X ?p ?lit .\n" + 
+					"	FILTER regex(?lit, \" network \")\n" + 
 					"}";
-			Date startTime, endTime;
-			long duration = 0l;
+			
 			// t1.flushFSCache();
+			Date startTime, endTime;
+			Runtime runtime = Runtime.getRuntime();
+			long duration = 0l;
 			startTime = new Date();
+			long usedMem = runtime.freeMemory();
+			System.out.println(usedMem);
+			long usedMem2 = runtime.freeMemory();
+			System.out.println(usedMem2);
 			t1.issueQuery(q2);
 			endTime = new Date();
 			t1.close();
 			duration = endTime.getTime() - startTime.getTime();
 			System.out.println("the time for execution is: " + duration);
+			System.out.println("memory was used: " + ((usedMem2 - usedMem)) + " kB");
 
 		}
 

@@ -38,7 +38,7 @@ public class TestBigDataFullText {
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private final static File ROOT_DATA_DIR = new File("BigData-repositories/");
-	private final static File ONTOLOGY_FILE = new File("/Users/saudaljaloud/NewEclipseWorkPlace/TestBigDataFullText/univ-bench.owl");
+	private final static File ONTOLOGY_FILE = new File("univ-bench.owl");
 
 	protected Repository repo;
 	protected RepositoryConnection conn;
@@ -267,7 +267,6 @@ public class TestBigDataFullText {
 					"  ?lit bd:minRank \"1\" .\n" + 
 					"  ?X ub:publicationText ?lit .\n" + 
 					"}";
-			
 			String q4 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
 					"prefix bd: <http://www.bigdata.com/rdf/search#>\n" + 

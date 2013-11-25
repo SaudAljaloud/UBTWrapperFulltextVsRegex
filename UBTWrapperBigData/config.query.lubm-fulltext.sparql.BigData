@@ -27,339 +27,339 @@ WHERE {
   ?X ?p ?lit .
 }
 
-# 
-# 
-# [lubm-fulltext-2.1]
-# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query is more precise than lubm-fulltext-1.1, but the result set is identical.
+
+
+[lubm-fulltext-2.1]
+# All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query is more precise than lubm-fulltext-1.1, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "engineer" .
+  ?X ub:publicationText ?lit .
+}
+
+[lubm-fulltext-2.2]
+# All resources that match the keyword 'network' in property 'ub:publicationText'. This query is more precise than lubm-fulltext-1.2, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "network" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+[lubm-fulltext-3]
+# All resources that match the keywords 'engineer' or 'network' in property 'ub:publicationText'. This query tests for OR boolean queries.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "engineer network" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+[lubm-fulltext-4]
+# All resources that match the phrase 'network engineer' in property 'ub:publicationText'. There are three such results in LUBMft(1).
+# Unlike other stores, BigData will return 6 results when searching "network engineer", where results like "network engineering" will be returned. however, for the consistency with other stores, it's been added a space before and after " network engineer ". This works for this dataset, however, for others, if a "network engineer" is at the start or the end, it won't match.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search " network engineer " .
+  ?lit bd:matchExact "true" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+[lubm-fulltext-5.1]
+# All resources that match the keyword 'smith' in property 'ub:surname', the most common surname. There are 95 results in LUBMft(1). This query is used to be compared with lubm-fulltext-5.2.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "smith" .
+  ?X ub:surname ?lit .
+}
+
+[lubm-fulltext-5.2]
+# All resources that have the string literal "Smith" as their surname. This query is equivalent to lubm-fulltext-5.1, except it refers to the exact string Literal. This allows for comparison of keyword and Literal lookup performance.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:surname "Smith" .
+}
+
+
+
+# === SEMANTIC IR QUERIES ===
+
+
+
+[lubm-fulltext-6]
+# All ub:Publications that match the keyword 'engineer' in property 'ub:publicationText'. This query is even more precise than lubm-fulltext-2.2, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "engineer" .
+  ?X ub:publicationText ?lit .
+  ?X rdf:type ub:Publication .
+}
+
+
+
+[lubm-fulltext-7]
+# All ub:Publications and their title, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-fulltext-6, this query further extracts the titles of the publications from the triple store.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?title
+WHERE {
+  ?lit bd:search "engineer" .
+  ?X ub:publicationText ?lit .
+  ?X ub:name ?title .
+  ?X rdf:type ub:Publication .
+}
+
+
+
+[lubm-fulltext-8]
+# All ub:Publications, their title, and the paper's full professor's fullname, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-fulltext-7, this query further performs some triple index lookups to extract the full professor's fullnames.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?title ?fullname
+WHERE {
+  ?lit bd:search "engineer" .
+  ?X ub:publicationText ?lit .
+  ?X ub:name ?title .
+  ?X ub:publicationAuthor ?Y .
+  ?X rdf:type ub:Publication .
+
+  ?Y ub:fullname ?fullname .
+  ?Y rdf:type ub:FullProfessor .
+}
+
+
+
+[lubm-fulltext-9]
+# All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?Y
+WHERE {
+  ?lity bd:search "smith" .
+  ?Y ub:fullname ?lity .
+
+  ?litx bd:search "engineer" .
+  ?X ub:publicationText ?litx .
+
+  ?X ub:publicationAuthor ?Y .
+}
+
+
+
+[lubm-fulltext-10]
+# All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?Y ?Z
+WHERE {
+  ?litx bd:search "network" .
+  ?X ub:publicationText ?litx .
+
+  ?lity bd:search "engineer" .
+  ?Y ub:publicationText ?lity .
+
+  ?X ub:publicationAuthor ?Z .
+  ?Y ub:publicationAuthor ?Z .
+  ?Z rdf:type ub:FullProfessor .
+}
+
+
+
+[lubm-fulltext-11]
+# All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT DISTINCT ?Z
+WHERE {
+  ?litx bd:search "network" .
+  ?X ub:publicationText ?litx .
+
+  ?lity bd:search "engineer" .
+  ?Y ub:publicationText ?lity .
+
+  ?litz bd:search "smith" .
+  ?Z ub:fullname ?litz .
+
+  ?X ub:publicationAuthor ?Z .
+  ?Y ub:publicationAuthor ?Z .
+  ?Z rdf:type ub:FullProfessor .
+}
+
+
+
+# === ADVANCED IR QUERIES ===
+
+
+
+[lubm-fulltext-12]
+# All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "engineer network" .
+  ?lit bd:matchAllTerms "true" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+[lubm-fulltext-13]
+# All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X
+# WHERE {
+#   ?lit bd:search "-engineer +network" .
+#   ?X ub:publicationText ?lit .
+# }
+
+
+
+[lubm-fulltext-14]
+# All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X
+# WHERE {
+#   ?lit bd:search "\"network engineer\"~10" .
+#   ?X ub:publicationText ?lit .
+# }
+
+
+
+[lubm-fulltext-15]
+# All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X
+WHERE {
+  ?lit bd:search "engineer*" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+[lubm-fulltext-16]
+# All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X
+# WHERE {
+#   ?lit bd:search "engineer?" .
+#   ?X ub:publicationText ?lit .
+# }
+
+
+
+[lubm-fulltext-17]
+# All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 # prefix bd: <http://www.bigdata.com/rdf/search#>
 # SELECT ?X
 # WHERE {
 #   ?lit bd:search "engineer" .
+#   ?lit bd:minRelevance "1" .
 #   ?X ub:publicationText ?lit .
 # }
-# 
-# [lubm-fulltext-2.2]
-# # All resources that match the keyword 'network' in property 'ub:publicationText'. This query is more precise than lubm-fulltext-1.2, but the result set is identical.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "network" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-3]
-# # All resources that match the keywords 'engineer' or 'network' in property 'ub:publicationText'. This query tests for OR boolean queries.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "engineer network" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-4]
-# # All resources that match the phrase 'network engineer' in property 'ub:publicationText'. There are three such results in LUBMft(1).
-# # Unlike other stores, BigData will return 6 results when searching "network engineer", where results like "network engineering" will be returned. however, for the consistency with other stores, it's been added a space before and after " network engineer ". This works for this dataset, however, for others, if a "network engineer" is at the start or the end, it won't match.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search " network engineer " .
-#   ?lit bd:matchExact "true" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-5.1]
-# # All resources that match the keyword 'smith' in property 'ub:surname', the most common surname. There are 95 results in LUBMft(1). This query is used to be compared with lubm-fulltext-5.2.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "smith" .
-#   ?X ub:surname ?lit .
-# }
-# 
-# [lubm-fulltext-5.2]
-# # All resources that have the string literal "Smith" as their surname. This query is equivalent to lubm-fulltext-5.1, except it refers to the exact string Literal. This allows for comparison of keyword and Literal lookup performance.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:surname "Smith" .
-# }
-# 
-# 
-# 
-# # === SEMANTIC IR QUERIES ===
-# 
-# 
-# 
-# [lubm-fulltext-6]
-# # All ub:Publications that match the keyword 'engineer' in property 'ub:publicationText'. This query is even more precise than lubm-fulltext-2.2, but the result set is identical.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "engineer" .
-#   ?X ub:publicationText ?lit .
-#   ?X rdf:type ub:Publication .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-7]
-# # All ub:Publications and their title, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-fulltext-6, this query further extracts the titles of the publications from the triple store.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?title
-# WHERE {
-#   ?lit bd:search "engineer" .
-#   ?X ub:publicationText ?lit .
-#   ?X ub:name ?title .
-#   ?X rdf:type ub:Publication .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-8]
-# # All ub:Publications, their title, and the paper's full professor's fullname, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-fulltext-7, this query further performs some triple index lookups to extract the full professor's fullnames.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?title ?fullname
-# WHERE {
-#   ?lit bd:search "engineer" .
-#   ?X ub:publicationText ?lit .
-#   ?X ub:name ?title .
-#   ?X ub:publicationAuthor ?Y .
-#   ?X rdf:type ub:Publication .
-# 
-#   ?Y ub:fullname ?fullname .
-#   ?Y rdf:type ub:FullProfessor .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-9]
-# # All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?Y
-# WHERE {
-#   ?lity bd:search "smith" .
-#   ?Y ub:fullname ?lity .
-# 
-#   ?litx bd:search "engineer" .
-#   ?X ub:publicationText ?litx .
-# 
-#   ?X ub:publicationAuthor ?Y .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-10]
-# # All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?Y ?Z
-# WHERE {
-#   ?litx bd:search "network" .
-#   ?X ub:publicationText ?litx .
-# 
-#   ?lity bd:search "engineer" .
-#   ?Y ub:publicationText ?lity .
-# 
-#   ?X ub:publicationAuthor ?Z .
-#   ?Y ub:publicationAuthor ?Z .
-#   ?Z rdf:type ub:FullProfessor .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-11]
-# # All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT DISTINCT ?Z
-# WHERE {
-#   ?litx bd:search "network" .
-#   ?X ub:publicationText ?litx .
-# 
-#   ?lity bd:search "engineer" .
-#   ?Y ub:publicationText ?lity .
-# 
-#   ?litz bd:search "smith" .
-#   ?Z ub:fullname ?litz .
-# 
-#   ?X ub:publicationAuthor ?Z .
-#   ?Y ub:publicationAuthor ?Z .
-#   ?Z rdf:type ub:FullProfessor .
-# }
-# 
-# 
-# 
-# # === ADVANCED IR QUERIES ===
-# 
-# 
-# 
-# [lubm-fulltext-12]
-# # All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "engineer network" .
-#   ?lit bd:matchAllTerms "true" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-13]
-# # All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X
-# # WHERE {
-# #   ?lit bd:search "-engineer +network" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# 
-# 
-# 
-# [lubm-fulltext-14]
-# # All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X
-# # WHERE {
-# #   ?lit bd:search "\"network engineer\"~10" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# 
-# 
-# 
-# [lubm-fulltext-15]
-# # All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X
-# WHERE {
-#   ?lit bd:search "engineer*" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# [lubm-fulltext-16]
-# # All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X
-# # WHERE {
-# #   ?lit bd:search "engineer?" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# 
-# 
-# 
-# [lubm-fulltext-17]
-# # All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X
-# # WHERE {
-# #   ?lit bd:search "engineer" .
-# #   ?lit bd:minRelevance "1" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# 
-# 
-# 
-# [lubm-fulltext-18]
-# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests the score of each matching resource to be returned.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?rank
-# WHERE {
-#   ?lit bd:search "engineer" .
-#   ?lit bd:rank ?rank .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# # [lubm-fulltext-19]
-# # # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
-# 
-# 
-# 
-# [lubm-fulltext-20]
-# # All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?rank
-# WHERE {
-#   ?lit bd:search "network" .
-#   ?lit bd:rank ?rank .
-#   ?X ub:publicationText ?lit .
-# }
-# ORDER BY DESC(?rank)
-# LIMIT 10
-# 
-# [lubm-fulltext-21]
-# # All resources that match the keyword 'network' in property 'ub:publicationText', but only the resources with score higher than 0.75. Though the keyword has 1013 matches in LUBMft(1), only 43 have a higher score (lucene) than 0.75.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# prefix bd: <http://www.bigdata.com/rdf/search#>
-# SELECT ?X ?rank
-# WHERE {
-#   ?lit bd:search "network" .
-#   ?lit bd:rank ?rank .
-#   ?lit bd:minRank "1" .
-#   ?X ub:publicationText ?lit .
-# }
-# 
-# 
-# 
-# 
-# # ==========================================================================================
-# 
-# 
-# 
-# # queries expressed in SPARQL, using regex search syntax
-# # [query ID]
-# # query
-# 
-# 
-# # === BASIC IR QUERIES ===
-# 
+
+
+
+[lubm-fulltext-18]
+# All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests the score of each matching resource to be returned.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?rank
+WHERE {
+  ?lit bd:search "engineer" .
+  ?lit bd:rank ?rank .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+# [lubm-fulltext-19]
+# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
+
+
+
+[lubm-fulltext-20]
+# All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?rank
+WHERE {
+  ?lit bd:search "network" .
+  ?lit bd:rank ?rank .
+  ?X ub:publicationText ?lit .
+}
+ORDER BY DESC(?rank)
+LIMIT 10
+
+[lubm-fulltext-21]
+# All resources that match the keyword 'network' in property 'ub:publicationText', but only the resources with score higher than 0.75. Though the keyword has 1013 matches in LUBMft(1), only 43 have a higher score (lucene) than 0.75.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+prefix bd: <http://www.bigdata.com/rdf/search#>
+SELECT ?X ?rank
+WHERE {
+  ?lit bd:search "network" .
+  ?lit bd:rank ?rank .
+  ?lit bd:minRank "1" .
+  ?X ub:publicationText ?lit .
+}
+
+
+
+
+# ==========================================================================================
+
+
+
+# queries expressed in SPARQL, using regex search syntax
+# [query ID]
+# query
+
+
+# === BASIC IR QUERIES ===
+
 [lubm-regex-1.1]
 # All resources that match the keyword 'engineer', a relatively infrequent term. There are 40 results in LUBMft(1).
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -380,307 +380,307 @@ WHERE {
 	FILTER regex(?lit, " network ")
 }
 
-# 
-# 
-# [lubm-regex-2.1]
-# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query is more precise than lubm-regex-1.1, but the result set is identical.
+
+
+[lubm-regex-2.1]
+# All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query is more precise than lubm-regex-1.1, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER regex(?lit, " engineer ")
+}
+
+[lubm-regex-2.2]
+# All resources that match the keyword 'network' in property 'ub:publicationText'. This query is more precise than lubm-regex-1.2, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER regex(?lit, " network ")
+}
+
+
+
+[lubm-regex-3]
+# All resources that match the keywords 'engineer' or 'network' in property 'ub:publicationText'. This query tests for OR boolean queries.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER (regex(?lit, " engineer ")
+	|| regex(?lit, " network "))
+}
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 # SELECT ?X
 # WHERE {
 #   ?X ub:publicationText ?lit .
-# 	FILTER regex(?lit, " engineer ")
+# 	FILTER regex(?lit, "engineer|network")
 # }
-# 
-# [lubm-regex-2.2]
-# # All resources that match the keyword 'network' in property 'ub:publicationText'. This query is more precise than lubm-regex-1.2, but the result set is identical.
+
+
+
+
+[lubm-regex-4]
+# All resources that match the phrase 'network engineer' in property 'ub:publicationText'. There are three such results in LUBMft(1).
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER regex(?lit, " network engineer ")
+}
+
+
+
+[lubm-regex-5.1]
+# All resources that match the keyword 'smith' in property 'ub:surname', the most common surname. There are 95 results in LUBMft(1). This query is used to be compared with lubm-regex-5.2.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:surname ?lit .
+	FILTER regex(?lit, "^smith$" , "i")
+}
+
+[lubm-regex-5.2]
+# All resources that have the string literal "Smith" as their surname. This query is equivalent to lubm-regex-5.1, except it refers to the exact string Literal. This allows for comparison of keyword and Literal lookup performance.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:surname "Smith" .
+}
+
+
+
+
+# === SEMANTIC IR QUERIES ===
+
+
+
+[lubm-regex-6]
+# All ub:Publications that match the keyword 'engineer' in property 'ub:publicationText'. This query is even more precise than lubm-regex-2.2, but the result set is identical.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+  ?X rdf:type ub:Publication .
+	FILTER regex(?lit, " engineer ")
+}
+
+
+
+[lubm-regex-7]
+# All ub:Publications and their title, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-regex-6, this query further extracts the titles of the publications from the triple store.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X ?title
+WHERE {
+  ?X ub:publicationText ?lit .
+  ?X ub:name ?title .
+  ?X rdf:type ub:Publication .
+	FILTER regex(?lit, " engineer ")
+}
+
+
+
+[lubm-regex-8]
+# All ub:Publications, their title, and the paper's full professor's fullname, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-regex-7, this query further performs some triple index lookups to extract the full professor's fullnames.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X ?title ?fullname
+WHERE {
+  ?X ub:publicationText ?lit .
+  ?X ub:name ?title .
+  ?X ub:publicationAuthor ?Y .
+  ?X rdf:type ub:Publication .
+
+  ?Y ub:fullname ?fullname .
+  ?Y rdf:type ub:FullProfessor .
+	FILTER regex(?lit, " engineer ")
+}
+
+
+
+[lubm-regex-9]
+# All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X ?Y
+WHERE {
+  ?Y ub:fullname ?lity .
+
+  ?X ub:publicationText ?litx .
+
+  ?X ub:publicationAuthor ?Y .
+	FILTER (regex(?lity, " smith ")
+		&&	regex(?litx, " engineer "))
+}
+
+
+
+[lubm-regex-10]
+# All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X ?Y ?Z
+WHERE {
+  ?X ub:publicationText ?litx .
+
+  ?Y ub:publicationText ?lity .
+
+  ?X ub:publicationAuthor ?Z .
+  ?Y ub:publicationAuthor ?Z .
+  ?Z rdf:type ub:FullProfessor .
+	FILTER (regex(?lity, " engineer ")
+		&&	regex(?litx, " network "))
+}
+
+
+
+[lubm-regex-11]
+# All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT DISTINCT ?Z
+WHERE {
+  ?X ub:publicationText ?litx .
+
+  ?Y ub:publicationText ?lity .
+
+  ?Z ub:fullname ?litz .
+
+  ?X ub:publicationAuthor ?Z .
+  ?Y ub:publicationAuthor ?Z .
+  ?Z rdf:type ub:FullProfessor .
+	FILTER (regex(?lity, " engineer ")
+		&&	regex(?litx, " network ")
+		&&	regex(?litz, " smith "))
+}
+
+
+
+# === ADVANCED IR QUERIES ===
+
+
+
+[lubm-regex-12]
+# All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER (regex(?lit, " engineer ")
+	&& regex(?lit, " network "))
+}
+
+
+
+[lubm-regex-13]
+# All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER (regex(?lit, " network ")
+	&& !regex(?lit, " engineer "))
+}
+
+
+
+[lubm-regex-14]
+# All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER (regex(?lit, " network\\W+(?:\\w+\\W+){0,8}?engineer ")
+		|| regex(?lit, " engineer\\W+(?:\\w+\\W+){0,8}?network "))
+}
+# I may need to remove or add more escapes
+
+
+[lubm-regex-15]
+# All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER regex(?lit, " engineer.*? ")
+}
+# ?lit bd:search "engineer*" . we may need to constrain it to be only one word!
+# Consider: engineer.*[a-zA-Z]\b
+
+[lubm-regex-16]
+# All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+SELECT ?X
+WHERE {
+  ?X ub:publicationText ?lit .
+	FILTER regex(?lit, "engineer[a-zA-Z]\\b")
+}
+
+
+# [lubm-regex-17]
+# # All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# prefix bd: <http://www.bigdata.com/rdf/search#>
 # SELECT ?X
 # WHERE {
+#   ?lit bd:search "engineer~0.8" .
 #   ?X ub:publicationText ?lit .
-# 	FILTER regex(?lit, " network ")
 # }
 # 
 # 
 # 
-# [lubm-regex-3]
-# # All resources that match the keywords 'engineer' or 'network' in property 'ub:publicationText'. This query tests for OR boolean queries.
+# [lubm-regex-18]
+# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests the score of each matching resource to be returned.
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X ?score
 # WHERE {
+#   (?lit ?score) bd:search "engineer" .
 #   ?X ub:publicationText ?lit .
-# 	FILTER (regex(?lit, " engineer ")
-# 	|| regex(?lit, " network "))
 # }
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # SELECT ?X
-# # WHERE {
-# #   ?X ub:publicationText ?lit .
-# # 	FILTER regex(?lit, "engineer|network")
-# # }
 # 
 # 
 # 
+# [lubm-regex-19]
+# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
 # 
-# [lubm-regex-4]
-# # All resources that match the phrase 'network engineer' in property 'ub:publicationText'. There are three such results in LUBMft(1).
+# 
+# 
+# [lubm-regex-20]
+# # All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X ?score
 # WHERE {
+#   (?lit ?score) bd:search ("network" 10) .
 #   ?X ub:publicationText ?lit .
-# 	FILTER regex(?lit, " network engineer ")
 # }
 # 
-# 
-# 
-# [lubm-regex-5.1]
-# # All resources that match the keyword 'smith' in property 'ub:surname', the most common surname. There are 95 results in LUBMft(1). This query is used to be compared with lubm-regex-5.2.
+# [lubm-regex-21]
+# # All resources that match the keyword 'network' in property 'ub:publicationText', but only the resources with score higher than 0.75. Though the keyword has 1013 matches in LUBMft(1), only 43 have a higher score (lucene) than 0.75.
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
+# prefix bd: <http://www.bigdata.com/rdf/search#>
+# SELECT ?X ?score
 # WHERE {
-#   ?X ub:surname ?lit .
-# 	FILTER regex(?lit, "^smith$" , "i")
-# }
-# 
-# [lubm-regex-5.2]
-# # All resources that have the string literal "Smith" as their surname. This query is equivalent to lubm-regex-5.1, except it refers to the exact string Literal. This allows for comparison of keyword and Literal lookup performance.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:surname "Smith" .
-# }
-# 
-# 
-# 
-# 
-# # === SEMANTIC IR QUERIES ===
-# 
-# 
-# 
-# [lubm-regex-6]
-# # All ub:Publications that match the keyword 'engineer' in property 'ub:publicationText'. This query is even more precise than lubm-regex-2.2, but the result set is identical.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
+#   (?lit ?score) bd:search ("network" 0.75) .
 #   ?X ub:publicationText ?lit .
-#   ?X rdf:type ub:Publication .
-# 	FILTER regex(?lit, " engineer ")
 # }
-# 
-# 
-# 
-# [lubm-regex-7]
-# # All ub:Publications and their title, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-regex-6, this query further extracts the titles of the publications from the triple store.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X ?title
-# WHERE {
-#   ?X ub:publicationText ?lit .
-#   ?X ub:name ?title .
-#   ?X rdf:type ub:Publication .
-# 	FILTER regex(?lit, " engineer ")
-# }
-# 
-# 
-# 
-# [lubm-regex-8]
-# # All ub:Publications, their title, and the paper's full professor's fullname, that match the keyword 'engineer' in property 'ub:publicationText'. Compared to lubm-regex-7, this query further performs some triple index lookups to extract the full professor's fullnames.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X ?title ?fullname
-# WHERE {
-#   ?X ub:publicationText ?lit .
-#   ?X ub:name ?title .
-#   ?X ub:publicationAuthor ?Y .
-#   ?X rdf:type ub:Publication .
-# 
-#   ?Y ub:fullname ?fullname .
-#   ?Y rdf:type ub:FullProfessor .
-# 	FILTER regex(?lit, " engineer ")
-# }
-# 
-# 
-# 
-# [lubm-regex-9]
-# # All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X ?Y
-# WHERE {
-#   ?Y ub:fullname ?lity .
-# 
-#   ?X ub:publicationText ?litx .
-# 
-#   ?X ub:publicationAuthor ?Y .
-# 	FILTER (regex(?lity, " smith ")
-# 		&&	regex(?litx, " engineer "))
-# }
-# 
-# 
-# 
-# [lubm-regex-10]
-# # All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X ?Y ?Z
-# WHERE {
-#   ?X ub:publicationText ?litx .
-# 
-#   ?Y ub:publicationText ?lity .
-# 
-#   ?X ub:publicationAuthor ?Z .
-#   ?Y ub:publicationAuthor ?Z .
-#   ?Z rdf:type ub:FullProfessor .
-# 	FILTER (regex(?lity, " engineer ")
-# 		&&	regex(?litx, " network "))
-# }
-# 
-# 
-# 
-# [lubm-regex-11]
-# # All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT DISTINCT ?Z
-# WHERE {
-#   ?X ub:publicationText ?litx .
-# 
-#   ?Y ub:publicationText ?lity .
-# 
-#   ?Z ub:fullname ?litz .
-# 
-#   ?X ub:publicationAuthor ?Z .
-#   ?Y ub:publicationAuthor ?Z .
-#   ?Z rdf:type ub:FullProfessor .
-# 	FILTER (regex(?lity, " engineer ")
-# 		&&	regex(?litx, " network ")
-# 		&&	regex(?litz, " smith "))
-# }
-# 
-# 
-# 
-# # === ADVANCED IR QUERIES ===
-# 
-# 
-# 
-# [lubm-regex-12]
-# # All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:publicationText ?lit .
-# 	FILTER (regex(?lit, " engineer ")
-# 	&& regex(?lit, " network "))
-# }
-# 
-# 
-# 
-# [lubm-regex-13]
-# # All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:publicationText ?lit .
-# 	FILTER (regex(?lit, " network ")
-# 	&& !regex(?lit, " engineer "))
-# }
-# 
-# 
-# 
-# [lubm-regex-14]
-# # All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:publicationText ?lit .
-# 	FILTER (regex(?lit, " network\\W+(?:\\w+\\W+){0,8}?engineer ")
-# 		|| regex(?lit, " engineer\\W+(?:\\w+\\W+){0,8}?network "))
-# }
-# # I may need to remove or add more escapes
-# 
-# 
-# [lubm-regex-15]
-# # All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:publicationText ?lit .
-# 	FILTER regex(?lit, " engineer.*? ")
-# }
-# # ?lit bd:search "engineer*" . we may need to constrain it to be only one word!
-# # Consider: engineer.*[a-zA-Z]\b
-# 
-# [lubm-regex-16]
-# # All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# SELECT ?X
-# WHERE {
-#   ?X ub:publicationText ?lit .
-# 	FILTER regex(?lit, "engineer[a-zA-Z]\\b")
-# }
-# 
-# 
-# # [lubm-regex-17]
-# # # All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X
-# # WHERE {
-# #   ?lit bd:search "engineer~0.8" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# # 
-# # 
-# # 
-# # [lubm-regex-18]
-# # # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests the score of each matching resource to be returned.
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X ?score
-# # WHERE {
-# #   (?lit ?score) bd:search "engineer" .
-# #   ?X ub:publicationText ?lit .
-# # }
-# # 
-# # 
-# # 
-# # [lubm-regex-19]
-# # # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
-# # 
-# # 
-# # 
-# # [lubm-regex-20]
-# # # All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X ?score
-# # WHERE {
-# #   (?lit ?score) bd:search ("network" 10) .
-# #   ?X ub:publicationText ?lit .
-# # }
-# # 
-# # [lubm-regex-21]
-# # # All resources that match the keyword 'network' in property 'ub:publicationText', but only the resources with score higher than 0.75. Though the keyword has 1013 matches in LUBMft(1), only 43 have a higher score (lucene) than 0.75.
-# # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# # prefix bd: <http://www.bigdata.com/rdf/search#>
-# # SELECT ?X ?score
-# # WHERE {
-# #   (?lit ?score) bd:search ("network" 0.75) .
-# #   ?X ub:publicationText ?lit .
-# # }

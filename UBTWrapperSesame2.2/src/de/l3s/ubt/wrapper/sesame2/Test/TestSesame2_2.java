@@ -248,7 +248,7 @@ public class TestSesame2_2 {
 		BasicConfigurator.configure();
 
 		TestSesame2_2 t1 = new TestSesame2_2();
-		String op = "load";
+		String op = "";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
 		t1.provideFulltext("spoc posc ospc");
 		t1.open("saud");
@@ -260,12 +260,15 @@ public class TestSesame2_2 {
 			String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
 					"PREFIX ls: <http://www.openrdf.org/contrib/lucenesail#>\n" + 
-					"SELECT ?X\n" + 
+					"SELECT ?X ?score\n" + 
 					"WHERE {\n" + 
 					"  ?X ls:matches [\n" + 
 					"    rdf:type ls:LuceneQuery ;\n" + 
-					"    ls:query \"network\"\n" + 
-					"  ]\n" + 
+					"    ls:query \"network\" ;\n" + 
+					"    ls:property ub:publicationText ;\n" + 
+					"    ls:score ?score\n" + 
+					"  ] .\n" + 
+					"  FILTER ( ?score > 0.06 )\n" + 
 					"}";
 			
 			// t1.flushFSCache();

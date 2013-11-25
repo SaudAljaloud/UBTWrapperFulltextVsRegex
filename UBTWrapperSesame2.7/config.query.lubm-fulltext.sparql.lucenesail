@@ -427,7 +427,7 @@ WHERE {
     ls:property ub:publicationText ;
     ls:score ?score
   ] .
-  FILTER ( ?score > 0.75 )
+  FILTER ( ?score > 0.006 )
 }
 
 

@@ -30,7 +30,7 @@ public class Test extends RepositoryCreator {
 	public static final int QUERY_TIME = 6;
 	/** name of file to hold the query test result */
 	/** command to flush system fs caches */
-	private static final String FLUSH_FS_CACHE_COMMAND = "sudo purge";
+	private static final String FLUSH_FS_CACHE_COMMAND = "purge";
 	/**
 	 * maximum allowed duration for a query, queries exceeding this limit are
 	 * not executed anymore

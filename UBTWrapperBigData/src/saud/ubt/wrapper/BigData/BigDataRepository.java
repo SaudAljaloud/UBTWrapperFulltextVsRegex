@@ -29,6 +29,7 @@ public abstract class BigDataRepository implements
 	protected Repository repo;
 	protected RepositoryConnection conn;
 	protected String ontology;
+	private String database;
 
 	protected void setUp() {
 //		BasicConfigurator.configure();

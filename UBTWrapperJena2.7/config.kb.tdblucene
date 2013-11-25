@@ -5,15 +5,29 @@
 # ontology=<url of univ-bench ontology> 
 
 # 1 university
-[JENA2.7_TDB_1]
+[JENA_V2.7_TDB_1]
 class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
-data=../../Data/
-database=LUBM-fulltext-1New-Version
+data=../../LUBM/LUBM-fulltext-1/
+database=LUBM-fulltext-1
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 5 universities
-#[JENA_TDB_5]
-#class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
-#data=../LUBM/LUBM-fulltext-5
-#database=LUBM-fulltext-5
-#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+[JENA_V2.7_TDB_5]
+class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
+data=../../LUBM/LUBM-fulltext-5/
+database=LUBM-fulltext-5
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# # 10 universities
+# [JENA_V2.7_TDB_10]
+# class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
+# data=../../LUBM/LUBM-fulltext-10/
+# database=LUBM-fulltext-10
+# ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+# 
+# # 50 universities
+# [JENA_V2.7_TDB_50]
+# class=de.l3s.ubt.wrapper.jena2.TDBLuceneFactory
+# data=../../LUBM/LUBM-fulltext-50/
+# database=LUBM-fulltext-50
+# ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl

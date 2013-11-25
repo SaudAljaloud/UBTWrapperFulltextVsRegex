@@ -2,7 +2,7 @@
 # mvn dependency:copy-dependencies
 for f in UBTWrapperJena2.5 UBTWrapperBigData UBTWrapperOwlim UBTWrapperSesame2.2 UBTWrapperVirtuoso5.0 UBTWrapperJena2.7 UBTWrapper4Store UBTWrapperSesame2.7 UBTWrapperVirtuoso7.0
 do
-	echo "=============================================================================================================
+	echo "============================================================================================================="
 	echo "============================================================================================================="
 
 	cd $f

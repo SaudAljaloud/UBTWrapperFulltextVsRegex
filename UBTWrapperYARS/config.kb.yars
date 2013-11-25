@@ -7,21 +7,28 @@
 # 1 university
 [YARS_1]
 class=de.l3s.ubt.wrapper.yars.YARSFactory
-data=../../Data/
+data=../../LUBM/LUBM-fulltext-1/
 database=LUBM-fulltext-1
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 5 universities
-#[YARS_5]
+[YARS_5]
+class=de.l3s.ubt.wrapper.yars.YARSFactory
+data=../LUBM/LUBM-fulltext-5
+database=LUBM-fulltext-5
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# 10 universities
+#[YARS_10]
 #class=de.l3s.ubt.wrapper.yars.YARSFactory
-#data=../LUBM/LUBM-fulltext-5
-#database=LUBM-fulltext-5
+#data=../../LUBM/LUBM-fulltext-50/
+#database=LUBM-fulltext-10
 #ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 50 universities
 #[YARS_50]
 #class=de.l3s.ubt.wrapper.yars.YARSFactory
-#data=../LUBM/LUBM-fulltext-50
+#data=../../LUBM/LUBM-fulltext-50/
 #database=LUBM-fulltext-50
 #ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 

@@ -26,7 +26,7 @@ WHERE {
   ?X ?p ?lit .
 }
 
-
+# 
 # 
 # [lubm-fulltext-2.1]
 # # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query is more precise than lubm-fulltext-1.1, but the result set is identical.
@@ -373,7 +373,7 @@ WHERE {
   ?X ?p ?lit .
 	FILTER regex(?lit, " network ")
 }
-# 
+
 # 
 # 
 # [lubm-regex-2.1]

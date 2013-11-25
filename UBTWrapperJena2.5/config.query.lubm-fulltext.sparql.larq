@@ -16,6 +16,7 @@ WHERE {
   ?X ?p ?lit .
 }
 
+
 [lubm-fulltext-1.2]
 # All resources that match the keyword 'network', a very frequent term. There are 1,013 results in LUBMft(1).
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

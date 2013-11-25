@@ -128,7 +128,7 @@ public class Test extends RepositoryCreator {
 	 */
 	public void testQuery(String kbConfigFile, String queryConfigFile) {
 		Date date = new Date();
-		SimpleDateFormat ft = new SimpleDateFormat("dd.mm.yyyy.hh.mm.ss");
+		SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
 		String dataFormate = ft.format(date).toString();
 		String QUERY_TEST_RESULT_FILE = "Result" + dataFormate + ".txt";
 		try {

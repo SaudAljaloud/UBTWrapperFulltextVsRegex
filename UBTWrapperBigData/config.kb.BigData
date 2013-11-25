@@ -6,14 +6,14 @@
 
 # 1 university
 [BigData_1]
-class=saud.ubt.wrapper.BigData.BigDataFactory
+class=saud.ubt.wrapper.BigData.BigDataFactory2
 data=../../LUBM/LUBM-fulltext-1/
 database=LUBM-fulltext-1
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 5 universities
 [BigData_5]
-class=saud.ubt.wrapper.BigData.BigDataFactory
+class=saud.ubt.wrapper.BigData.BigDataFactory2
 data=../../LUBM/LUBM-fulltext-5
 database=LUBM-fulltext-5
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl

@@ -35,7 +35,7 @@ public class Test extends RepositoryCreator {
 	 * maximum allowed duration for a query, queries exceeding this limit are
 	 * not executed anymore
 	 */
-	private static final Integer MAX_DURATION = 100000;
+	private static final Integer MAX_DURATION = 1000000;
 
 	/** list of target systems */
 	@SuppressWarnings("rawtypes")

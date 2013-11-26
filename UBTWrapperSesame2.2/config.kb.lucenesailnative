@@ -19,15 +19,15 @@ database=LUBM-fulltext-5
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 10 universities
-#[SESAME2.2_LUCENESAIL_NATIVE_10]
-#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
-#data=../../LUBM/LUBM-fulltext-10/
-#database=LUBM-fulltext-10
-#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+[SESAME2.2_LUCENESAIL_NATIVE_10]
+class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+data=../../LUBM/LUBM-fulltext-10/
+database=LUBM-fulltext-10
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
 # 50 universities
-#[SESAME2.2_LUCENESAIL_NATIVE_50]
-#class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
-#data=../../LUBM/LUBM-fulltext-50/
-#database=LUBM-fulltext-50
-#ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+[SESAME2.2_LUCENESAIL_NATIVE_50]
+class=de.l3s.ubt.wrapper.sesame2.LuceneSailNativeStoreFactory
+data=../../LUBM/LUBM-fulltext-50/
+database=LUBM-fulltext-50
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl

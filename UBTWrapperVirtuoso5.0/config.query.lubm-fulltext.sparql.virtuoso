@@ -224,6 +224,7 @@ WHERE {
 }
 [lubm-fulltext-14]
 # All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
+# Virtuoso don't give the option to specify a word bound.
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 SELECT ?X
@@ -235,6 +236,7 @@ WHERE {
 
 [lubm-fulltext-15]
 # All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
+# This is identical to query 16, as wildcard are working in a regex-style.
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 SELECT ?X
@@ -246,8 +248,8 @@ WHERE {
 
 
 [lubm-fulltext-16]
-# # All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
-# # Within virtuoso, wildcards are performed as a regex type, in which a pattern like "'engineer*'" will match 939 ressults. 
+# All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
+# Within virtuoso, wildcards are performed as a regex type, in which a pattern like "'engineer*'" will match 939 ressults. 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 SELECT ?X

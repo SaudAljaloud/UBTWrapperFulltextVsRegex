@@ -314,7 +314,7 @@ WHERE {
 
 
 
-# [lubm-fulltext-19]
+[lubm-fulltext-19]
 # # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
 
 

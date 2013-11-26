@@ -172,6 +172,7 @@ WHERE {
 
 [lubm-regex-10]
 # All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+# 4store, for this query, returns 369 which tripe what others returns which should be 123!
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 SELECT ?X ?Y ?Z

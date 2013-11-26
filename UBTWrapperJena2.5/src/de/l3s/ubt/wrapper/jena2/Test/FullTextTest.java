@@ -267,7 +267,7 @@ public class FullTextTest {
 		// TODO Auto-generated method stub
 		BasicConfigurator.configure();
 		FullTextTest t1 = new FullTextTest();
-		String op = "";
+		String op = "load";
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
 		t1.provideFulltext();
 		t1.open("saud");
@@ -286,9 +286,9 @@ public class FullTextTest {
 			String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
 					"PREFIX arq: <http://jena.hpl.hp.com/ARQ/property#>\n" + 
-					"SELECT ?X ?score\n" + 
+					"SELECT ?X\n" + 
 					"WHERE {\n" + 
-					"  (?lit ?score) arq:textMatch (\"network\" 0.06) .\n" + 
+					"  ?lit arq:textMatch \"engineer*\" .\n" + 
 					"  ?X ub:publicationText ?lit .\n" + 
 					"}";
 			Date startTime, endTime;

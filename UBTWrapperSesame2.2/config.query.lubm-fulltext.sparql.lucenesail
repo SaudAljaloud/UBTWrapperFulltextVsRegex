@@ -400,11 +400,12 @@ WHERE {
 
 [lubm-fulltext-20]
 # All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
+# All versions of Sesame which uses LuceneSail don't work properly with LIMIT, therefore, they return all records regardless the Limit condition.
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX ls: <http://www.openrdf.org/contrib/lucenesail#>
 SELECT ?X ?score
-WHERE {
+WHERE {w
   ?X ls:matches [
     rdf:type ls:LuceneQuery ;
     ls:query "network" ;

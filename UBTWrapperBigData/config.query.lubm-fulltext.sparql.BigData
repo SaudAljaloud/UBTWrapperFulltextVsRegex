@@ -262,6 +262,7 @@ WHERE {
 
 [lubm-fulltext-15]
 # All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
+# This query returns 954 instead if 939. This is because of a dublication happened for the rest of the results.
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 prefix bd: <http://www.bigdata.com/rdf/search#>

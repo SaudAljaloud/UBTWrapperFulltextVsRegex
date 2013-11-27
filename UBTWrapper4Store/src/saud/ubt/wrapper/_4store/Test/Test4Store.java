@@ -23,7 +23,8 @@ public class Test4Store {
 			.getLogger(_4storeRepository.class);
 	// private final static File ONTOLOGY_FILE = new File("univ-bench.owl");
 	private final static String RDF_FORMAT = "rdfxml";
-
+	private final static String CONFIGFILE = "config-test.ttl";
+	
 	private String ontology;
 	private String database;
 	private String DATABASE_ROOT = "/var/lib/4store/";
@@ -78,6 +79,14 @@ public class Test4Store {
 			Process pr = run.exec("killall " + SPARQL_PROTOCOL);
 			pr.waitFor();
 			log.debug("Sparql is stopped!");
+			
+			log.debug("Loading fulltext conffigration file");
+			Process pr4 = run.exec(IMPORT_DATA + " -v " + database 
+					 + " -m " + "system:config" + " " + CONFIGFILE);
+			pr4.waitFor();
+			log.debug("fulltext is configered");
+			
+			
 			log.debug("loading data from dir '{}'", dataDir);
 			File file = new File(dataDir);
 			File[] files = file.listFiles();
@@ -204,17 +213,26 @@ public class Test4Store {
 				if (t1.load("../../Data/"))
 					t1.close();
 			} else if (op.equals("load") || args[0].equals("query")) {
-				String q1 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-						+ "PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n"
-						+ "SELECT ?X\n"
-						+ "WHERE {\n"
-						+ "  ?X ?p ?lit .\n"
-						+ "	FILTER regex(?lit, \" engineer \")\n" + "}";
+				String q1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+						"PREFIX text: <http://4store.org/fulltext#>\n" + 
+						"SELECT ?X \n" + 
+						"WHERE {\n" + 
+						"  ?lit text:token \"network\" .\n" + 
+						"  ?X ?p ?lit .\n" + 
+						"}";
+				String q2 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
+						"PREFIX text: <http://4store.org/fulltext#>\n" + 
+						"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
+						"SELECT ?x\n" + 
+						"WHERE {\n" + 
+						"        ?x text:token \"network\" .\n" + 
+						"       ?x ub:publicationText ?string .\n" + 
+						"}";
 				Date startTime, endTime;
 				long duration = 0l;
 				// t1.flushFSCache();
 				startTime = new Date();
-				t1.issueQuery(q1);
+				t1.issueQuery(q2);
 				endTime = new Date();
 				t1.close();
 				duration = endTime.getTime() - startTime.getTime();

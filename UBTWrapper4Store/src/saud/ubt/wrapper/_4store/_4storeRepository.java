@@ -22,6 +22,7 @@ public class _4storeRepository implements
 			.getLogger(_4storeRepository.class);
 	// private final static File ONTOLOGY_FILE = new File("univ-bench.owl");
 	private final static String RDF_FORMAT = "rdfxml";
+	private final static String CONFIGFILE = "config-test.ttl";
 
 	private String ontology;
 	private String database;
@@ -77,6 +78,14 @@ public class _4storeRepository implements
 			Process pr = run.exec("killall " + SPARQL_PROTOCOL);
 			pr.waitFor();
 			log.debug("Sparql is stopped!");
+			
+			log.debug("Loading fulltext conffigration file");
+			Process pr4 = run.exec(IMPORT_DATA + " -v " + database 
+					 + " -m " + "system:config" + " " + CONFIGFILE);
+			pr4.waitFor();
+			log.debug("fulltext is configered");
+
+			
 			log.debug("loading data from dir '{}'", dataDir);
 			File file = new File(dataDir);
 			File[] files = file.listFiles();

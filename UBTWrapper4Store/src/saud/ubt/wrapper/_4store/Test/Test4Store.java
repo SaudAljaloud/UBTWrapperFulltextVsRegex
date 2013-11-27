@@ -182,6 +182,9 @@ public class Test4Store {
 			store = new Store("http://localhost:" + sparqlPort);
 			String response = store.query(query, Store.OutputFormat.JSON, -1);
 			_4storeQueryResult rs = new _4storeQueryResult(response);
+			System.out.println("====================");
+			System.out.println(response);
+			System.out.println("====================");
 			int totalno = 0;
 			while (rs.next()) {
 				totalno++;
@@ -215,18 +218,24 @@ public class Test4Store {
 			} else if (op.equals("load") || args[0].equals("query")) {
 				String q1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
 						"PREFIX text: <http://4store.org/fulltext#>\n" + 
-						"SELECT ?X \n" + 
+						"SELECT ?X ?P ?O ?C \n" + 
 						"WHERE {\n" + 
-						"  ?lit text:token \"network\" .\n" + 
-						"  ?X ?p ?lit .\n" + 
+						" ?X ?P ?O ?C . " + 
 						"}";
-				String q2 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
-						"PREFIX text: <http://4store.org/fulltext#>\n" + 
+				String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 						"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
-						"SELECT ?x\n" + 
+						"PREFIX text: <http://4store.org/fulltext#>\n" + 
+						"SELECT ?X\n" + 
 						"WHERE {\n" + 
-						"        ?x text:token \"network\" .\n" + 
-						"       ?x ub:publicationText ?string .\n" + 
+						"  ?X text:token \"network\" .\n" + 
+						"  ?X ub:publicationText ?litx .\n" + 
+						"\n" + 
+						"  ?Y text:token \"engineer\" .\n" + 
+						"  ?Y ub:publicationText ?lity .\n" + 
+						"\n" + 
+						"  ?X ub:publicationAuthor ?Z .\n" + 
+						"  ?Y ub:publicationAuthor ?Z .\n" + 
+						"  ?Z rdf:type ub:FullProfessor .\n" + 
 						"}";
 				Date startTime, endTime;
 				long duration = 0l;

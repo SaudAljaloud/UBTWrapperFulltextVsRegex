@@ -205,6 +205,8 @@ public class Test4Store {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Test4Store t1 = new Test4Store();
+		System.out.println("hihhhhhhh");
+		System.exit(0);
 		String op = "";
 
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
@@ -225,18 +227,12 @@ public class Test4Store {
 				String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 						"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
 						"PREFIX text: <http://4store.org/fulltext#>\n" + 
-						"SELECT ?X\n" + 
+						"SELECT ?X ?y\n" + 
 						"WHERE {\n" + 
-						"  ?X text:token \"network\" .\n" + 
-						"  ?X ub:publicationText ?litx .\n" + 
-						"\n" + 
-						"  ?Y text:token \"engineer\" .\n" + 
-						"  ?Y ub:publicationText ?lity .\n" + 
-						"\n" + 
-						"  ?X ub:publicationAuthor ?Z .\n" + 
-						"  ?Y ub:publicationAuthor ?Z .\n" + 
-						"  ?Z rdf:type ub:FullProfessor .\n" + 
-						"}";
+						"  ?X text:stem \"engineer\" .\n" +
+						"  ?X ub:publicationText ?lit ." + 
+						"}" +
+						"limit 1000";
 				Date startTime, endTime;
 				long duration = 0l;
 				// t1.flushFSCache();

@@ -32,51 +32,43 @@ public class TestBigDataFullText {
 	/**
 	 * @param args
 	 */
-	
+
 	private static final String FLUSH_FS_CACHE_COMMAND = "purge";
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final static File ROOT_DATA_DIR = new File("BigData-repositories/");
+	private final static File ROOT_DATA_DIR = new File("Tests");
 	private final static File ONTOLOGY_FILE = new File("univ-bench.owl");
 
 	protected Repository repo;
 	protected RepositoryConnection conn;
 	protected String ontology;
-
-	protected void setUp() {
-		this.repo = createRepository();
-	}
+	private String database;
 
 	public void provideFulltext() {
-		this.setUp();
-	}
-
-	public Properties loadProperties(String resource) throws Exception {
-		Properties p = new Properties();
-		InputStream is = new FileInputStream(resource); 
-		p.load(new InputStreamReader(new BufferedInputStream(is)));
-		return p;
-	}
-
-	protected BigdataSailRepository createRepository() {
 		BigdataSail sail = null;
 		try {
-	        Properties properties = loadProperties("fastload.properties");
-	        File journal = new File(ROOT_DATA_DIR + "/bigdata.jnl");
-	        properties.setProperty(BigdataSail.Options.FILE, journal
-                    .getAbsolutePath());
+			Properties properties = loadProperties("fastload.properties");
+			File journal = new File(ROOT_DATA_DIR + "/" + this.database
+					+ "/bigdata.jnl");
+			properties.setProperty(BigdataSail.Options.FILE,
+					journal.getAbsolutePath());
 			sail = new BigdataSail(properties);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new BigdataSailRepository(sail);
-		
+
+		this.repo = new BigdataSailRepository(sail);
 	}
 
-
+	public Properties loadProperties(String resource) throws Exception {
+		Properties p = new Properties();
+		InputStream is = new FileInputStream(resource);
+		p.load(new InputStreamReader(new BufferedInputStream(is)));
+		return p;
+	}
 
 	public void clear() {
 		log.debug("clearing repository");
@@ -115,20 +107,20 @@ public class TestBigDataFullText {
 			TupleQueryResult r = q.evaluate();
 			TupleQueryResult r2 = q.evaluate();
 			log.info("queried repository");
-			
-          ArrayList reslist = new ArrayList();
-          while (r.hasNext()) {
-              BindingSet b = r.next();
-              Set names = b.getBindingNames();
-              HashMap hm = new HashMap();
-              for (Object n : names) {
-                  hm.put((String) n, b.getValue((String) n));
-              }
-              reslist.add(hm);
-          }
+
+			ArrayList reslist = new ArrayList();
+			while (r.hasNext()) {
+				BindingSet b = r.next();
+				Set names = b.getBindingNames();
+				HashMap hm = new HashMap();
+				for (Object n : names) {
+					hm.put((String) n, b.getValue((String) n));
+				}
+				reslist.add(hm);
+			}
 			System.out.println("========");
 
-          for (Object object : reslist) {
+			for (Object object : reslist) {
 				System.out.println(object);
 			}
 			System.out.println("========");
@@ -175,9 +167,39 @@ public class TestBigDataFullText {
 		return true;
 	}
 
+	public boolean loadOneFile(String dataDir) {
+		log.debug("loading data from dir '{}'", dataDir);
+
+		File file = new File(dataDir);
+
+		if (file.getPath().contains("University")) {
+			RDFFormat format = RDFFormat.forFileName(file.getName(),
+					RDFFormat.RDFXML);
+
+			log.debug("loading data from file '{}' as '{}'", file,
+					format.toString());
+			try {
+				this.conn.setAutoCommit(false);
+				this.conn.add(file, this.ontology, RDFFormat.RDFXML);
+				this.conn.commit();
+			} catch (Exception e) {
+				log.error("could not load data from file '" + file.getName()
+						+ "' as '" + format.toString() + "'", e);
+				e.printStackTrace();
+				return false;
+			}
+			log.debug("loaded data from file '{}'", file);
+		}
+
+		log.info("loaded data");
+
+		return true;
+	}
+
 	public void open(String database) {
 		log.debug("opening repository with database '{}'", database);
-
+		this.database = database;
+		this.provideFulltext();
 		try {
 			this.repo.initialize();
 			this.conn = this.repo.getConnection();
@@ -190,16 +212,15 @@ public class TestBigDataFullText {
 		// if not, load the univ-bench ontology
 		try {
 			if (this.conn.isEmpty()) {
+				this.conn.setAutoCommit(false);
 				try {
-					this.conn.setAutoCommit(false);
-					this.conn.add(ONTOLOGY_FILE, this.ontology, RDFFormat.RDFXML);
+					this.conn.add(ONTOLOGY_FILE, this.ontology,
+							RDFFormat.RDFXML);
 					this.conn.commit();
 				} catch (Exception e) {
 					log.error(
 							"could not load ontology file '"
 									+ ONTOLOGY_FILE.getAbsolutePath() + "'", e);
-					System.out.println("hiiiii");
-					e.printStackTrace();
 				}
 			}
 		} catch (RepositoryException e) {
@@ -248,33 +269,30 @@ public class TestBigDataFullText {
 		String op = "";
 		t1.provideFulltext();
 		t1.setOntology("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl");
-		
-		
+
 		t1.open("");
-		
+
 		if (op.equals("load")) {
 			if (t1.load("../../Data/"))
 				t1.close();
 		} else {
-			
-			String q5 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
-					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
-					"prefix bd: <http://www.bigdata.com/rdf/search#>\n" + 
-					"SELECT ?X ?rank\n" + 
-					"WHERE {\n" + 
-					"  ?lit bd:search \"network\" .\n" + 
-					"  ?lit bd:rank ?rank .\n" + 
-					"  ?lit bd:minRank \"1\" .\n" + 
-					"  ?X ub:publicationText ?lit .\n" + 
-					"}";
-			String q4 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
-					"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
-					"prefix bd: <http://www.bigdata.com/rdf/search#>\n" + 
-					"SELECT ?X\n" + 
-					"WHERE {\n" + 
-					"  ?lit bd:search \"engineer*\" .\n" + 
-					"  ?X ub:publicationText ?lit .\n" + 
-					"}";
+
+			String q5 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+					+ "PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n"
+					+ "prefix bd: <http://www.bigdata.com/rdf/search#>\n"
+					+ "SELECT ?X ?rank\n"
+					+ "WHERE {\n"
+					+ "  ?lit bd:search \"network\" .\n"
+					+ "  ?lit bd:rank ?rank .\n"
+					+ "  ?lit bd:minRank \"1\" .\n"
+					+ "  ?X ub:publicationText ?lit .\n" + "}";
+			String q4 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+					+ "PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n"
+					+ "prefix bd: <http://www.bigdata.com/rdf/search#>\n"
+					+ "SELECT ?X\n"
+					+ "WHERE {\n"
+					+ "  ?lit bd:search \"engineer*\" .\n"
+					+ "  ?X ub:publicationText ?lit .\n" + "}";
 			// t1.flushFSCache();
 			Date startTime, endTime;
 			Runtime runtime = Runtime.getRuntime();

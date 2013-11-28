@@ -206,15 +206,15 @@ WHERE {
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://4store.org/fulltext#>
-SELECT DISTINCT ?Z
+SELECT DISTINCT ?X ?Y ?Z
 WHERE {
-  ?litx text:token "network" .
+  ?X text:token "network" .
   ?X ub:publicationText ?litx .
 
-  ?lity text:token "engineer" .
+  ?Y text:token "engineer" .
   ?Y ub:publicationText ?lity .
 
-  ?litz text:token "smith" .
+  ?Z text:token "smith" .
   ?Z ub:fullname ?litz .
 
   ?X ub:publicationAuthor ?Z .
@@ -235,8 +235,8 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://4store.org/fulltext#>
 SELECT ?X
 WHERE {
-  ?lit text:token "engineer network" .
-  ?lit bd:matchAllTerms "true" .
+  ?X text:token "engineer" .
+  ?X text:token "network" .
   ?X ub:publicationText ?lit .
 }
 
@@ -244,14 +244,15 @@ WHERE {
 
 [lubm-fulltext-13]
 # All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
-# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-# PREFIX text: <http://4store.org/fulltext#>
-# SELECT ?X
-# WHERE {
-#   ?lit text:token "-engineer +network" .
-#   ?X ub:publicationText ?lit .
-# }
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX text: <http://4store.org/fulltext#>
+SELECT ?X
+WHERE {
+  ?X text:token "network" .
+  MINUS { ?X text:token "engineer" . }
+  ?X ub:publicationText ?lit .
+}
 
 
 
@@ -270,15 +271,15 @@ WHERE {
 
 [lubm-fulltext-15]
 # All resources that match the wildcard query 'engineer*' in property 'ub:publicationText'. The query matches, 'engineer', 'engineering', and 'engineers'. There are 939 results in LUBMft(1).
-# This query returns 954 instead if 939. This is because of a dublication happened for the rest of the results.
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://4store.org/fulltext#>
-SELECT ?X
-WHERE {
-  ?lit text:token "engineer*" .
-  ?X ub:publicationText ?lit .
-}
+# 4store dosen't support wildcard, but support stemming, therefore for this query and the another below query, won't work.
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://4store.org/fulltext#>
+# SELECT ?X
+# WHERE {
+#   ?X text:stem "engineer" .
+#   ?X ub:publicationText ?lit .
+# }
 
 
 
@@ -297,13 +298,13 @@ WHERE {
 
 [lubm-fulltext-17]
 # All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
+# with 4store, only stemming is working, therefore, we can't apply a similarity measure, though we can do a general stemming search.
 # PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 # PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 # PREFIX text: <http://4store.org/fulltext#>
 # SELECT ?X
 # WHERE {
-#   ?lit text:token "engineer" .
-#   ?lit bd:minRelevance "1" .
+#   ?X text:stem "engineer" .
 #   ?X ub:publicationText ?lit .
 # }
 
@@ -311,49 +312,45 @@ WHERE {
 
 [lubm-fulltext-18]
 # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests the score of each matching resource to be returned.
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://4store.org/fulltext#>
-SELECT ?X ?rank
-WHERE {
-  ?lit text:token "engineer" .
-  ?lit bd:rank ?rank .
-  ?X ub:publicationText ?lit .
-}
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://4store.org/fulltext#>
+# SELECT ?X ?rank
+# WHERE {
+#   ?X text:token "engineer" .
+#   ?X ub:publicationText ?lit .
+# }
 
 
 
 [lubm-fulltext-19]
-# # All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
+# All resources that match the keyword 'engineer' in property 'ub:publicationText'. This query further requests a snippet of the matching literal of each matching resource to be returned.
 
 
 
 [lubm-fulltext-20]
 # All resources that match the keyword 'network' in property 'ub:publicationText', but only 10 resources with the highest score.
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://4store.org/fulltext#>
-SELECT ?X ?rank
-WHERE {
-  ?lit text:token "network" .
-  ?lit bd:rank ?rank .
-  ?X ub:publicationText ?lit .
-}
-ORDER BY DESC(?rank)
-LIMIT 10
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://4store.org/fulltext#>
+# SELECT ?X ?rank
+# WHERE {
+#   ?X text:token "network" .
+#   ?X ub:publicationText ?lit .
+# }
+# ORDER BY DESC(?rank)
+# LIMIT 10
 
 [lubm-fulltext-21]
 # All resources that match the keyword 'network' in property 'ub:publicationText', but only the resources with score higher than 0.75. Though the keyword has 1013 matches in LUBMft(1), only 43 have a higher score (lucene) than 0.75.
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://4store.org/fulltext#>
-SELECT ?X ?rank
-WHERE {
-  ?lit text:token "network" .
-  ?lit bd:rank ?rank .
-  ?lit bd:minRank "1" .
-  ?X ub:publicationText ?lit .
-}
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://4store.org/fulltext#>
+# SELECT ?X ?rank
+# WHERE {
+#   ?X text:token "network" .
+#   ?X ub:publicationText ?lit .
+# }
 
 
 

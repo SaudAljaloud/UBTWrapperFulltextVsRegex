@@ -8,26 +8,26 @@
 [4Store_1]
 class=saud.ubt.wrapper._4store._4storeFactory
 data=../../LUBM/LUBM-fulltext-1/
-database=LUBMtest
+database=LUBM1
 ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
 
-# # 5 universities
-# [4Store_5]
-# class=saud.ubt.wrapper._4store._4storeFactory
-# data=../../LUBM/LUBM-fulltext-5/
-# database=LUBM5
-# ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
-# 
-# # # 10 universities
-# [4Store_10]
-# class=saud.ubt.wrapper._4store._4storeFactory
-# data=../../LUBM/LUBM-fulltext-10/
-# database=LUBM-fulltext-10
-# ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
-# 
-# # # 50 universities
-# [4Store_50]
-# class=saud.ubt.wrapper._4store._4storeFactory
-# data=../../LUBM/LUBM-fulltext-50/
-# database=LUBM-fulltext-50
-# ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+# 5 universities
+[4Store_5]
+class=saud.ubt.wrapper._4store._4storeFactory
+data=../../LUBM/LUBM-fulltext-5/
+database=LUBM5
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# # 10 universities
+[4Store_10]
+class=saud.ubt.wrapper._4store._4storeFactory
+data=../../LUBM/LUBM-fulltext-10/
+database=LUBM10
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl
+
+# # 50 universities
+[4Store_50]
+class=saud.ubt.wrapper._4store._4storeFactory
+data=../../LUBM/LUBM-fulltext-50/
+database=LUBM50
+ontology=http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl

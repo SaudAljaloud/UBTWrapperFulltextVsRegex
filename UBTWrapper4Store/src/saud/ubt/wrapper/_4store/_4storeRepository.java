@@ -27,7 +27,7 @@ public class _4storeRepository implements
 	private String ontology;
 	private String database;
 	private String DATABASE_ROOT = "/var/lib/4store/";
-	private String sparqlPort = "8000";
+	private String sparqlPort = "1234";
 	private Store store;
 	private String CREATE_DATABASE = "4s-backend-setup";
 	private String DATABASE_BACKEND = "4s-backend";

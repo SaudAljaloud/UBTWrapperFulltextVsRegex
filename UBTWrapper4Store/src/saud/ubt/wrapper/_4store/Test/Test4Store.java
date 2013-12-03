@@ -24,7 +24,7 @@ public class Test4Store {
 	// private final static File ONTOLOGY_FILE = new File("univ-bench.owl");
 	private final static String RDF_FORMAT = "rdfxml";
 	private final static String CONFIGFILE = "config-test.ttl";
-	
+
 	private String ontology;
 	private String database;
 	private String DATABASE_ROOT = "/var/lib/4store/";
@@ -59,10 +59,10 @@ public class Test4Store {
 			pr3.waitFor();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -79,14 +79,13 @@ public class Test4Store {
 			Process pr = run.exec("killall " + SPARQL_PROTOCOL);
 			pr.waitFor();
 			log.debug("Sparql is stopped!");
-			
+
 			log.debug("Loading fulltext conffigration file");
-			Process pr4 = run.exec(IMPORT_DATA + " -v " + database 
-					 + " -m " + "system:config" + " " + CONFIGFILE);
+			Process pr4 = run.exec(IMPORT_DATA + " -v " + database + " -m "
+					+ "system:config" + " " + CONFIGFILE);
 			pr4.waitFor();
 			log.debug("fulltext is configered");
-			
-			
+
 			log.debug("loading data from dir '{}'", dataDir);
 			File file = new File(dataDir);
 			File[] files = file.listFiles();
@@ -101,10 +100,10 @@ public class Test4Store {
 					+ RDF_FORMAT + " -m " + ontology + " " + seprator);
 			pr2.waitFor();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -134,7 +133,7 @@ public class Test4Store {
 
 			proc.waitFor();
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		log.info("closed database");
@@ -171,10 +170,7 @@ public class Test4Store {
 
 	public void issueQuery(String query) {
 
-		// if ("" == null) {
-		// log.error("cannot issue query because server connection is not setup properly");
-		// return null;
-		// }
+		
 
 		log.debug("querying repository with query\n{}", query);
 
@@ -203,7 +199,7 @@ public class Test4Store {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		Test4Store t1 = new Test4Store();
 		String op = "";
 
@@ -216,27 +212,25 @@ public class Test4Store {
 				if (t1.load("../../Data/"))
 					t1.close();
 			} else if (op.equals("load") || args[0].equals("query")) {
-				String q1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + 
-						"PREFIX text: <http://4store.org/fulltext#>\n" + 
-						"SELECT ?X ?P ?O ?C \n" + 
-						"WHERE {\n" + 
-						" ?X ?P ?O ?C . " + 
-						"}";
-				String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
-						"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
-						"PREFIX text: <http://4store.org/fulltext#>\n" + 
-						"SELECT ?X\n" + 
-						"WHERE {\n" + 
-						"  ?X text:token \"network\" .\n" + 
-						"  ?X ub:publicationText ?litx .\n" + 
-						"\n" + 
-						"  ?Y text:token \"engineer\" .\n" + 
-						"  ?Y ub:publicationText ?lity .\n" + 
-						"\n" + 
-						"  ?X ub:publicationAuthor ?Z .\n" + 
-						"  ?Y ub:publicationAuthor ?Z .\n" + 
-						"  ?Z rdf:type ub:FullProfessor .\n" + 
-						"}";
+				String q1 = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+						+ "PREFIX text: <http://4store.org/fulltext#>\n"
+						+ "SELECT ?X ?P ?O ?C \n"
+						+ "WHERE {\n"
+						+ " ?X ?P ?O ?C . " + "}";
+				String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+						+ "PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n"
+						+ "PREFIX text: <http://4store.org/fulltext#>\n"
+						+ "SELECT ?X\n"
+						+ "WHERE {\n"
+						+ "  ?X text:token \"network\" .\n"
+						+ "  ?X ub:publicationText ?litx .\n"
+						+ "\n"
+						+ "  ?Y text:token \"engineer\" .\n"
+						+ "  ?Y ub:publicationText ?lity .\n"
+						+ "\n"
+						+ "  ?X ub:publicationAuthor ?Z .\n"
+						+ "  ?Y ub:publicationAuthor ?Z .\n"
+						+ "  ?Z rdf:type ub:FullProfessor .\n" + "}";
 				Date startTime, endTime;
 				long duration = 0l;
 				// t1.flushFSCache();

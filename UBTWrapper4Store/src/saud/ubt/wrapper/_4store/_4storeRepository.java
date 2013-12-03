@@ -44,18 +44,20 @@ public class _4storeRepository implements
 		try {
 			if (!new File(DATABASE_ROOT + this.database).exists()) {
 				log.debug("give a name to the database: ", this.database);
-				Process pr = run.exec(CREATE_DATABASE + " " + this.database);
-				pr.waitFor();
+				Process createDatabaseProcess = run.exec(CREATE_DATABASE + " "
+						+ this.database);
+				createDatabaseProcess.waitFor();
 			}
-			
+
 			log.debug("start the server");
-			Process pr2 = run.exec(DATABASE_BACKEND + " " + this.database);
-			pr2.waitFor();
+			Process runBackEndProcess = run.exec(DATABASE_BACKEND + " "
+					+ this.database);
+			runBackEndProcess.waitFor();
 			log.debug("Run SPARQL connection on database: " + this.database);
 			log.debug("Run SPARQL connection on port: " + sparqlPort);
-			Process pr3 = run.exec(SPARQL_PROTOCOL + " -p " + sparqlPort + " "
-					+ this.database);
-			pr3.waitFor();
+			Process runSparqlProcess = run.exec(SPARQL_PROTOCOL + " -p "
+					+ sparqlPort + " " + this.database);
+			runSparqlProcess.waitFor();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -78,14 +80,13 @@ public class _4storeRepository implements
 			Process pr = run.exec("killall " + SPARQL_PROTOCOL);
 			pr.waitFor();
 			log.debug("Sparql is stopped!");
-			
+
 			log.debug("Loading fulltext conffigration file");
-			Process pr4 = run.exec(IMPORT_DATA + " -v " + database 
-					 + " -m " + "system:config" + " " + CONFIGFILE);
-			pr4.waitFor();
+			Process addFulltextProcess = run.exec(IMPORT_DATA + " -v "
+					+ database + " -m " + "system:config" + " " + CONFIGFILE);
+			addFulltextProcess.waitFor();
 			log.debug("fulltext is configered");
 
-			
 			log.debug("loading data from dir '{}'", dataDir);
 			File file = new File(dataDir);
 			File[] files = file.listFiles();
@@ -96,9 +97,10 @@ public class _4storeRepository implements
 				}
 			}
 
-			Process pr2 = run.exec(IMPORT_DATA + " -v " + database + " -f "
-					+ RDF_FORMAT + " -m " + ontology + " " + seprator);
-			pr2.waitFor();
+			Process addTriplesProcess = run.exec(IMPORT_DATA + " -v "
+					+ database + " -f " + RDF_FORMAT + " -m " + ontology + " "
+					+ seprator);
+			addTriplesProcess.waitFor();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -124,10 +126,12 @@ public class _4storeRepository implements
 			Process pr = run.exec("killall " + SPARQL_PROTOCOL);
 			pr.waitFor();
 			log.debug("closing the database");
-			Process pr2 = run.exec("pkill -f '" + DATABASE_BACKEND +  " " + this.database + "'");
+			Process pr2 = run.exec("pkill -f '" + DATABASE_BACKEND + " "
+					+ this.database + "'");
 			pr2.waitFor();
-			Process proc = new ProcessBuilder("/bin/bash",
-					"-c", "pkill", "-f", "'^" + DATABASE_BACKEND + " " + this.database + "$'").start();
+			Process proc = new ProcessBuilder("/bin/bash", "-c", "pkill", "-f",
+					"'^" + DATABASE_BACKEND + " " + this.database + "$'")
+					.start();
 
 			proc.waitFor();
 		} catch (IOException | InterruptedException e) {
@@ -139,11 +143,6 @@ public class _4storeRepository implements
 	}
 
 	public QueryResult issueQuer3(edu.lehigh.swat.bench.ubt.api.Query query) {
-
-		// if ("" == null) {
-		// log.error("cannot issue query because server connection is not setup properly");
-		// return null;
-		// }
 
 		log.debug("querying repository with query\n{}", query.getString());
 

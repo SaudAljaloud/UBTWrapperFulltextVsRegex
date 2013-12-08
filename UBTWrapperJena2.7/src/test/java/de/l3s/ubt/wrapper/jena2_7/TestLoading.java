@@ -1,10 +1,8 @@
 package de.l3s.ubt.wrapper.jena2_7;
 
 
-import org.apache.log4j.BasicConfigurator;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runners.Suite;
 
 
 import edu.lehigh.swat.bench.ubt.RepositoryCreator;

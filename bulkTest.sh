@@ -1,6 +1,6 @@
 # mvn clean install
 # mvn dependency:copy-dependencies
-for f in UBTWrapperJena2.5 UBTWrapperBigData UBTWrapperOwlim UBTWrapperSesame2.2 UBTWrapperJena2.7 UBTWrapper4Store UBTWrapperSesame2.7 UBTWrapperVirtuoso5.0 UBTWrapperVirtuoso7.0 UBTWrapperYARS
+for f in UBTWrapperJena2.5 UBTWrapperBigData UBTWrapperOwlim UBTWrapperSesame2.2 UBTWrapperJena2.7 UBTWrapper4Store UBTWrapperSesame2.7 UBTWrapperVirtuoso5.0 UBTWrapperVirtuoso7.0
 # for f in UBTWrapperVirtuoso7.0 UBTWrapperYARS
 do
 	echo "============================================================================================================="

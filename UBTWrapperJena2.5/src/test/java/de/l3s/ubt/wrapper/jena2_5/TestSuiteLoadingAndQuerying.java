@@ -2,7 +2,6 @@ package de.l3s.ubt.wrapper.jena2_5;
 
 import java.io.File;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;

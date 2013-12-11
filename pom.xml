@@ -17,6 +17,8 @@
 	<module>/UBTWrapper4Store</module>
 	<module>/UBTWrapperBigData</module>
 	<module>/UBTWrapperOwlim</module>
+	<module>/UBTWrapperJena2.11.1</module>
+	
 	
     <module>/UBT</module>
   </modules>

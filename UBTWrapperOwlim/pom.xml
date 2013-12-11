@@ -73,7 +73,7 @@
 				\ -Dfile=lib/owlim-se-5.4.jar -->
 			<groupId>ontotext-owlim-se</groupId>
 			<artifactId>owlim-se</artifactId>
-			<version>5.4.0</version>
+			<version>5.4.1</version>
 		</dependency>
 		<dependency>
 <!-- 		mvn deploy:deploy-file \

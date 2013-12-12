@@ -1,6 +1,13 @@
 Building:
 cd root/path/
 mvn clean install
+
+The above will not run tests, to run them use:
+mvn install -DskipTests=false
+
+This may not work for all triples, so you may cd each one and do the above cmd.
+
+
 mvn dependency:copy-dependencies 
 This will download all dependances in to path target/dependency which will be used when runing the scripts
 The file: "config.kb.tdblucene" contains the configrations for each triple store, the data path should point to the dir where is should ideally be at ../../LUBM/LUBM...

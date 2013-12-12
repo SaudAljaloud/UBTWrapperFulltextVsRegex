@@ -79,7 +79,7 @@ public abstract class OwlimRepository3 implements
 				repositoryId = value.stringValue();
 			}
 
-			System.out.println("Repository ID=" + repositoryId);
+			log.debug("Repository ID=" + repositoryId);
 
 			// Check to see if the repository already exists
 			RepositoryInfo repositoryInfo = null;
@@ -90,24 +90,24 @@ public abstract class OwlimRepository3 implements
 
 			// If not, then create it
 			if (repositoryInfo == null) {
-				System.out.println("Creating repository configuration");
+				log.debug("Creating repository configuration");
 				RepositoryConfig repConfig = RepositoryConfig.create(graph, repositoryNode);
 				repositoryManager.addRepositoryConfig(repConfig);
-				System.out.println("Creating new repository");
+				log.debug("Creating new repository");
 			} else {
-				System.out.println("Using existing repository");
+				log.debug("Using existing repository");
 			}
 
 			Collection<RepositoryInfo> infos = repositoryManager.getAllRepositoryInfos();
 			for (RepositoryInfo info : infos) {
-				System.out.println("Stored repository info: " + info.getId() + " - " + info.getLocation());
+				log.debug("Stored repository info: " + info.getId() + " - " + info.getLocation());
 			}
 
 			
-			System.out.println("Repository created: " + repo);
+			log.debug("Repository created: " + repo);
 			
 			
-			System.out.println("Repository created: " + repo);
+			log.debug("Repository created: " + repo);
 //			conn = repo.getConnection();
 //			System.out.println("Repository open");
 //			conn.setAutoCommit(false);
@@ -232,7 +232,7 @@ public abstract class OwlimRepository3 implements
 						format.toString());
 				try {
 					this.conn.begin();
-					this.conn.add(file, this.ontology, format);
+					this.conn.add(file, this.ontology, RDFFormat.RDFXML);
 					this.conn.commit();
 					
 				} catch (Exception e) {

@@ -1,10 +1,18 @@
-Do this:
-Run: cd root/path/
-Run: mvn clean install
-Run: mvn dependency:copy-dependencies //this will download all dependances in to path target/dependency which will be used when runing the scripts
-Modify the propery "data=" in file "config.kb.tdblucene" to point to the absoulte path containing data in a RDF/XML and contain, all files should contain the word "University".
-Run sh ./load_ubt_tdblucene.sh // for loading data into a seprate directory within the project.
-Run sh ./query_ubt_tdblucene.sh // for querying the tripe store from the file "config.query.lubm-fulltext.sparql.larq"
+Building:
+cd root/path/
+mvn clean install
+mvn dependency:copy-dependencies 
+This will download all dependances in to path target/dependency which will be used when runing the scripts
+The file: "config.kb.tdblucene" contains the configrations for each triple store, the data path should point to the dir where is should ideally be at ../../LUBM/LUBM...
+and all rdf should be in RDF/XML formate and should have the prefix "University" to be processed.
+ 
+
+Then, either edit/run the file bulkTest.sh for all triple stores, or
+
+cd to the cosen store and:
+
+Run sh ./load_ubt_*.sh // for loading data into a seprate directory within the project.
+Run sh ./query_ubt_*.sh // for querying the tripe store from the file "config.query.lubm-fulltext.sparql.larq"
 Find the result in a text file start with Result and suffixed with date and time.
 
 

@@ -1,8 +1,7 @@
 .DS_Store
 target/
-/.settings
+.settings/
 /.svn
 /sesame-repositories
 .metadata
-.settings
-Result*
+Result*	

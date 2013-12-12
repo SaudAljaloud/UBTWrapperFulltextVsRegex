@@ -1,40 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>UBTWrapper</groupId>
+		<artifactId>Root</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>UBTWrapper</groupId>
 	<artifactId>UBTWrapperOwlim</artifactId>
 	<version>0.0.1</version>
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source />
-					<target />
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>UBT</groupId>
 			<artifactId>UBT</artifactId>
 			<version>0.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 
 		<dependency>
@@ -71,41 +51,21 @@
 			<version>5.4.1</version>
 		</dependency>
 		<dependency>
-<!-- 		mvn deploy:deploy-file \
- -DgroupId=ontotext-owlim-se \
-  -DartifactId=onto-crypto \
-   -Dversion=0.0.1 \
-    -Dpackaging=jar \
-	 -DrepositoryId=owlim.releases \
-	  -Durl=file:repo \
-	   -Dfile=lib/onto-crypto-0.1.jar -->
-	   
-		<groupId>ontotext-owlim-se</groupId>
+			<!-- mvn deploy:deploy-file \ -DgroupId=ontotext-owlim-se \ -DartifactId=onto-crypto 
+				\ -Dversion=0.0.1 \ -Dpackaging=jar \ -DrepositoryId=owlim.releases \ -Durl=file:repo 
+				\ -Dfile=lib/onto-crypto-0.1.jar -->
+
+			<groupId>ontotext-owlim-se</groupId>
 			<artifactId>onto-crypto</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.6.1</version>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-runtime</artifactId>
+			<version>2.7.8</version>
 		</dependency>
-				<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-				<dependency>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-					<version>4.11</version>
-				</dependency>
-				<dependency>
-					<groupId>org.openrdf.sesame</groupId>
-					<artifactId>sesame-runtime</artifactId>
-					<version>2.7.8</version>
-				</dependency>
 	</dependencies>
 	<repositories>
 		<repository>

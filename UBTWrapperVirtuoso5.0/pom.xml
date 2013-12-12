@@ -1,63 +1,33 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>UBTWrapper</groupId>
-  <artifactId>UBTWrapperVirtuoso5.0</artifactId>
-  <version>0.0.1</version>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
-        <configuration>
-          <source/>
-          <target/>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-  	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-api</artifactId>
-  		<version>1.5.0</version>
-  		<classifier>tests</classifier>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-jdk14</artifactId>
-  		<version>1.5.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.openlinksw.virtuoso</groupId>
-  		<artifactId>virtjdbc3</artifactId>
-  		<version>3.0</version>
-  	</dependency>
-  	<dependency>
-  <groupId>UBT</groupId>
-  <artifactId>UBT</artifactId>
-  <version>0.0.1</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.11</version>
-  	</dependency>
-  </dependencies>
-  <repositories>
-    <!--other repositories if any-->
-    <repository>
-        <id>project.local</id>
-        <name>project</name>
-        <url>file:${project.basedir}/repo</url>
-    </repository>
-</repositories>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>UBTWrapper</groupId>
+		<artifactId>Root</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>UBTWrapperVirtuoso5.0</artifactId>
+	<version>0.0.1</version>
+	<dependencies>
+		<dependency>
+			<groupId>com.openlinksw.virtuoso</groupId>
+			<artifactId>virtjdbc3</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>UBT</groupId>
+			<artifactId>UBT</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<!--other repositories if any -->
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${project.basedir}/repo</url>
+		</repository>
+	</repositories>
 </project>

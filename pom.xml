@@ -1,12 +1,90 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>UBT</groupId>
-  <artifactId>UBTRoot</artifactId>
-  <version>0.0.1</version>
+  <groupId>UBTWrapper</groupId>
+  <artifactId>Root</artifactId>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>Saud Aljaloud</name>
-  <description>the root test for all wrappers</description>
+  <description>the root of all wrappers</description>
+  
+<properties>
+	<skipTests>true</skipTests>
+</properties>
+
+<build>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>          
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>      
+    </pluginManagement> 
+	
+	<resources>
+		<resource>
+			<directory>src/main/java</directory>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</resource>
+		<resource>
+			<directory>src/test/java</directory>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</resource>
+	</resources>
+	<plugins>
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.0</version>
+			<configuration>
+				<source />
+				<target />
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>2.16</version>
+			<configuration>
+				<skipTests>${skipTests}</skipTests>
+			</configuration>
+		</plugin>
+
+	</plugins>
+</build>
+  
+  
+  	<dependencies>
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-jdk14</artifactId>
+	<version>1.5.0</version>
+</dependency>
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-log4j12</artifactId>
+	<version>1.5.6</version>
+</dependency>
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-api</artifactId>
+	<version>1.5.6</version>
+</dependency>
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.11</version>
+</dependency>
+</dependencies>
 <modules>
+	<module>/UBT</module>
     <module>/UBTWrapperJena2.7</module>
     <module>/UBTWrapperJena2.5</module>
     <module>/UBTWrapperVirtuoso5.0</module>
@@ -20,6 +98,6 @@
 	<module>/UBTWrapperJena2.11.1</module>
 	
 	
-    <module>/UBT</module>
+
   </modules>
 </project>

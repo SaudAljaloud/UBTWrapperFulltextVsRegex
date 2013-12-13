@@ -87,7 +87,7 @@ public abstract class SesameRepository implements
 				RDFFormat format = RDFFormat.forFileName(file.getName(),
 						RDFFormat.RDFXML);
 
-				log.debug("loading data from file '{}' as '{}'", file,
+				log.info("loading data from file '{}' as '{}'", file,
 						format.toString());
 				try {
 					this.conn.begin();

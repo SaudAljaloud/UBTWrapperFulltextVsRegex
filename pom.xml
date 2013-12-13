@@ -33,6 +33,13 @@
 			</excludes>
 		</resource>
 		<resource>
+			<directory>src/main/resources</directory>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</resource>
+		
+		<resource>
 			<directory>src/test/java</directory>
 			<excludes>
 				<exclude>**/*.java</exclude>

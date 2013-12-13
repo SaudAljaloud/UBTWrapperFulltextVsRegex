@@ -238,6 +238,7 @@ public class Test extends RepositoryCreator {
 		}
 
 		showTestLoadingResults();
+		showTestLoadResultsToFile();
 	}
 
 	/** Conducts query test */
@@ -466,5 +467,30 @@ public class Test extends RepositoryCreator {
 			}
 			queryTestResultFile_.println();
 		}
+	}
+
+	private void showTestLoadResultsToFile() {
+		KbSpecification kb;
+		PrintStream loadTestResultFile_ = null;
+		Date date = new Date();
+		SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
+		String dataFormate = ft.format(date).toString();
+		String QUERY_TEST_RESULT_FILE = "LoadingResult" + dataFormate + ".txt";
+
+		try {
+
+			loadTestResultFile_ = new PrintStream(new FileOutputStream(
+					QUERY_TEST_RESULT_FILE.toString()));
+			loadTestResultFile_.println();
+			for (int i = 0; i < kbList_.size(); i++) {
+				kb = (KbSpecification) kbList_.get(i);
+				loadTestResultFile_.println("\t" + kb.id_ + "\t" + kb.duration
+						+ " seconds");
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		loadTestResultFile_.close();
 	}
 }

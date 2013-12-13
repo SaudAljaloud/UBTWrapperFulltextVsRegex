@@ -1,11 +1,11 @@
 Building:
-cd root/path/
+cd to/root/
 mvn clean install
 
 The above will not run tests, to run them use:
 mvn install -DskipTests=false
 
-This may not work for all triples, so you may cd each one and do the above cmd.
+This may not work for all triple stores, so you may cd each one and do the above cmd.
 
 
 mvn dependency:copy-dependencies 

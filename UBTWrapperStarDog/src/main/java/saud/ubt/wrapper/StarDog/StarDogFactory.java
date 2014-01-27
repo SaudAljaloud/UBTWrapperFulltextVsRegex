@@ -9,9 +9,7 @@ public class StarDogFactory extends RepositoryFactory {
 
 	@Override
 	public Repository create() {
-		StarDogRepository repo = new StarDogRepository();
-		repo.provideFulltext();
-		return repo;
+		return new StarDogRepository();
 	}
 
 }

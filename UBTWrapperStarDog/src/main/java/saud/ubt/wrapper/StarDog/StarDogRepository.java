@@ -1,11 +1,13 @@
 package saud.ubt.wrapper.StarDog;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.openrdf.query.TupleQueryResult;
+import org.openrdf.rio.RDFFormat;
 
 import com.complexible.common.protocols.server.Server;
 import com.complexible.common.protocols.server.ServerException;
@@ -32,40 +34,14 @@ public class StarDogRepository implements
 	protected AdminConnection aAdminConnection;
 	protected Connection aConn;
 	protected String ontology;
-	protected boolean fulltext;
+	protected boolean fulltext = true;
 	private String database;
-
-	protected void setUp() {
-		createRepository();
-	}
 
 	public void provideFulltext() {
 		fulltext = true;
-		this.setUp();
-	}
-
-	protected void createRepository() {
-		try {
-			aServer = Stardog.buildServer()
-					.bind(SNARLProtocolConstants.EMBEDDED_ADDRESS).start();
-
-		} catch (ServerException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public void clear() {
-		// log.debug("clearing repository");
-		//
-		// try {
-		// this.repo.getConnection().clearNamespaces();
-		// } catch (RepositoryException e) {
-		// log.error("Could not clear repository", e);
-		// return;
-		// }
-		//
-		// log.info("cleared repository");
 
 	}
 
@@ -73,11 +49,14 @@ public class StarDogRepository implements
 		log.debug("closing repository");
 		//
 		try {
-			if (aConn.isOpen()) {
-				aConn.close();
-			}
+			
+			 
+
 			if (aAdminConnection.isOpen()) {
 				aAdminConnection.close();
+			}
+			if (aConn != null && aConn.isOpen()) {
+				aConn.close();
 			}
 			if (aServer.isRunning()) {
 				aServer.stop();
@@ -92,11 +71,13 @@ public class StarDogRepository implements
 		log.debug("querying repository with query\n{}", query.getString());
 
 		try {
-
-			log.info("queried repository");
-			System.out.println(query.getString());
+			aConn = ConnectionConfiguration.to(database)
+					.credentials("admin", "admin").connect();
+			
+			aConn.begin();
 			SelectQuery aQuery = aConn.select(query.getString());
 			TupleQueryResult aResult = aQuery.execute();
+			aConn.commit();
 			return new StarDogQueryResult(aResult);
 
 		} catch (Exception e) {
@@ -109,34 +90,40 @@ public class StarDogRepository implements
 	public boolean load(String dataDir) {
 		log.debug("loading data from dir '{}'", dataDir);
 
-		log.debug("loading the ontoloy into the database from file: "
-				+ ONTOLOGY_FILE);
-		// try {
-		// aAdminConnection.disk(database).create(ONTOLOGY_FILE);
-		// } catch (StardogException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-
 		File dir = new File(dataDir);
 		File[] files = dir.listFiles();
-		for (File file : files) {
-			if (file.getPath().contains("University")) {
-				log.debug("loading data from file '{}' as '{}'", file,
-						RDF_FORMAT);
-				try {
+		try {
+			aConn = ConnectionConfiguration.to(database)
+					.credentials("admin", "admin").connect();
 
-					aAdminConnection.disk(database).searchable(fulltext)
-							.create(file.getAbsoluteFile());
+			aConn.begin();
 
-				} catch (Exception e) {
-					log.error(
-							"could not load data from file '" + file.getName()
-									+ "' as '" + RDF_FORMAT + "'", e);
-					return false;
+			for (File file : files) {
+				if (file.getPath().contains("University")) {
+					log.debug("loading data from file '{}' as '{}'", file,
+							RDF_FORMAT);
+					try {
+
+						aConn.add()
+								.io()
+								.format(RDFFormat.RDFXML)
+								.stream(new FileInputStream(file
+										.getAbsoluteFile()));
+
+					} catch (Exception e) {
+						log.error(
+								"could not load data from file '"
+										+ file.getName() + "' as '"
+										+ RDF_FORMAT + "'", e);
+						return false;
+					}
+
 				}
-
 			}
+			aConn.commit();
+		} catch (StardogException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		log.info("loaded data");
 
@@ -149,14 +136,26 @@ public class StarDogRepository implements
 		this.database = database;
 		if (database != null) {
 			try {
+				aServer = Stardog.buildServer()
+						.bind(SNARLProtocolConstants.EMBEDDED_ADDRESS).start();
+
 				aAdminConnection = AdminConnectionConfiguration
 						.toEmbeddedServer().credentials("admin", "admin")
 						.connect();
+				if (!aAdminConnection.list().contains(database)) {
+					log.debug("loading the ontoloy into the database from file: "
+							+ ONTOLOGY_FILE);
+					aAdminConnection.disk(database).searchable(fulltext)
+							.create(ONTOLOGY_FILE);
+					log.debug("Closing the adminConnection");
+					aAdminConnection.close();
+				}
+				log.debug("Opening  a user connection");
 
-				aConn = ConnectionConfiguration.to(database)
-						.credentials("admin", "admin").connect();
-				aConn.begin();
 			} catch (StardogException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -10,7 +10,38 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>UBTWrapperStarDog</artifactId>
 	<version>0.0.1</version>
+
+
 	<dependencies>
+		<dependency>
+			<groupId>com.complexible.stardog</groupId>
+			<artifactId>api</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.complexible.stardog.protocols.snarl</groupId>
+			<artifactId>client</artifactId>
+			<version>2.1</version>
+		</dependency>
+<!-- 		<dependency>
+			<groupId>com.complexible.stardog</groupId>
+			<artifactId>sesame</artifactId>
+			<version>2.1</version>
+		</dependency> -->
+
+
+		<dependency>
+			<groupId>stardog</groupId>
+			<artifactId>stardog</artifactId>
+			<version>2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>stardog</groupId>
+			<artifactId>protocol.api.server</artifactId>
+			<version>2.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>UBT</groupId>
 			<artifactId>UBT</artifactId>
@@ -21,6 +52,7 @@
 
 	</dependencies>
 	<repositories>
+		<!--other repositories if any -->
 		<repository>
 			<id>project.local</id>
 			<name>project</name>

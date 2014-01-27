@@ -19,12 +19,37 @@ public class TestingStarDog2 {
 		test.setDataSource(kb.dataSource);
 		test.setDatabaseName(kb.databaseName);
 		test.setOntologyName(kb.ontologyName);
+		
+		
+		
+		AbstractTest test2 = new AbstractTest();
+		test2.setClassName(kb.className);
+		test2.setDataSource(kb.dataSource);
+		test2.setDatabaseName(kb.databaseName);
+		test2.setOntologyName(kb.ontologyName);
 
 //		test.testLoading();
 
-		String q = "select * where { ?s ?p ?o } limit 10";
-		test.testQuery(q);
+		
 
+		String q2 = "" + 
+				"SELECT ?X\n" + 
+				"WHERE {\n" + 
+				"  ?X ?p ?lit .\n" + 
+				"	FILTER regex(?lit, \"engin\")\n" + 
+				"}";
+		test2.testQuery(q2);
+		
+		String q = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+				"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
+				"SELECT ?X\n" + 
+				"WHERE {\n" + 
+				"  ?X ?p ?lit .\n" + 
+				"	FILTER regex(?lit, \"dfgdfg\")\n" + 
+				"}";
+		test.testQuery(q);
+		
+	
 		
 	}
 

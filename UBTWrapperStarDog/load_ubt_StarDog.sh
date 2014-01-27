@@ -1,0 +1,1 @@
+./run_ubt_StarDog.sh load config.kb.StarDog

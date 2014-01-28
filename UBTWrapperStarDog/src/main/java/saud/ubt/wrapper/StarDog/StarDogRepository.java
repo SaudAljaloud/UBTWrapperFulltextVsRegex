@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.apache.lucene.search.SearcherFactory;
+import org.apache.lucene.search.SearcherManager;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.rio.RDFFormat;
 
@@ -18,7 +20,15 @@ import com.complexible.stardog.api.ConnectionConfiguration;
 import com.complexible.stardog.api.SelectQuery;
 import com.complexible.stardog.api.admin.AdminConnection;
 import com.complexible.stardog.api.admin.AdminConnectionConfiguration;
+import com.complexible.stardog.api.impl.SearchConnectionImpl;
+import com.complexible.stardog.api.search.Searcher;
 import com.complexible.stardog.protocols.snarl.SNARLProtocolConstants;
+import com.complexible.stardog.search.SearchConstants;
+import com.complexible.stardog.search.SearchIndex;
+import com.complexible.stardog.search.SearchOptions;
+import com.complexible.stardog.search.cli.Search;
+import com.complexible.stardog.search.cli.SearchCLIModule;
+import com.complexible.stardog.search.waldo.SearchLimit;
 
 import edu.lehigh.swat.bench.ubt.api.Query;
 import edu.lehigh.swat.bench.ubt.api.QueryResult;
@@ -73,9 +83,10 @@ public class StarDogRepository implements
 		try {
 			aConn = ConnectionConfiguration.to(database)
 					.credentials("admin", "admin").connect();
-			
 			aConn.begin();
 			SelectQuery aQuery = aConn.select(query.getString());
+			
+			
 			TupleQueryResult aResult = aQuery.execute();
 			aConn.commit();
 			return new StarDogQueryResult(aResult);
@@ -152,6 +163,7 @@ public class StarDogRepository implements
 				}
 				log.debug("Opening  a user connection");
 
+				
 			} catch (StardogException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -22,32 +22,22 @@ public class TestingStarDog2 {
 		
 		
 		
-		AbstractTest test2 = new AbstractTest();
-		test2.setClassName(kb.className);
-		test2.setDataSource(kb.dataSource);
-		test2.setDatabaseName(kb.databaseName);
-		test2.setOntologyName(kb.ontologyName);
 
 //		test.testLoading();
 
 		
 
-		String q2 = "" + 
-				"SELECT ?X\n" + 
-				"WHERE {\n" + 
-				"  ?X ?p ?lit .\n" + 
-				"	FILTER regex(?lit, \"engin\")\n" + 
-				"}";
-		test2.testQuery(q2);
-		
-		String q = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+		String q2 = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
 				"PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>\n" + 
+				"PREFIX arq: <http://jena.hpl.hp.com/ARQ/property#>\n" + 
 				"SELECT ?X\n" + 
 				"WHERE {\n" + 
+				"  ?lit arq:textMatch \"network\" .\n" + 
 				"  ?X ?p ?lit .\n" + 
-				"	FILTER regex(?lit, \"dfgdfg\")\n" + 
 				"}";
-		test.testQuery(q);
+		test.testQuery(q2);
+		
+
 		
 	
 		

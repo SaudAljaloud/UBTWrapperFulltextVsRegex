@@ -7,7 +7,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>UBTWrapperJena2.11.1</artifactId>
+	<artifactId>UBTWrapperJena2.11RegexIndex</artifactId>
 	<version>0.0.1</version>
 	<properties>
 		<ver.jena>2.11.1-SNAPSHOT</ver.jena>

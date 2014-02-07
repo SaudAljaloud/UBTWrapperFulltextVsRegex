@@ -4,6 +4,19 @@
 
 
 # === BASIC IR QUERIES ===
+[lubm-regex-1.1]
+# All resources that match the keyword 'engineer', a relatively infrequent term. There are 40 results in LUBMft(1).
+# Number of Results: 197
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX text: <http://jena.apache.org/text#>
+SELECT ?X ?lit
+WHERE {
+  ?X ub:publicationText ?lit .
+  filter regex (?lit, "estimation relevant")	
+
+}
+
 
 [lubm-fulltext-1.1]
 # All resources that match the keyword 'engineer', a relatively infrequent term. There are 40 results in LUBMft(1).
@@ -13,24 +26,14 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X ?lit
 WHERE {
+  ?X text:query (ub:publicationText "estimation relevant") .
   ?X ub:publicationText ?lit .
-  filter regex (?lit, "engineering")	
 
 }
 
-[lubm-fulltext-1.1]
-# All resources that match the keyword 'engineer', a relatively infrequent term. There are 40 results in LUBMft(1).
-# Number of Results: 197
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X ?lit
-WHERE {
-  ?X text:query (ub:publicationText "engineering") .
-  ?X ub:publicationText ?lit .
-  filter regex (?lit, "engineering")	
 
-}
+
+
 
 
 

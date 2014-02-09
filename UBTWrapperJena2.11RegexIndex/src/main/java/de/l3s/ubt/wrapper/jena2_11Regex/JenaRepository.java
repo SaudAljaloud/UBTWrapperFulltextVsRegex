@@ -25,6 +25,7 @@ import org.apache.jena.query.text.TextDatasetFactory;
 import org.apache.jena.query.text.TextIndex;
 import org.apache.jena.query.text.TextIndexLucene;
 
+
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.core.PathBlock;
@@ -60,9 +61,11 @@ public abstract class JenaRepository implements
 
 	private Dataset ds;
 	private Dataset ds2;
-	private String queryString;
-	private String regexVar;
+
+	private String regexVar = null;
+	private String queryString = null;
 	final Node search = Node.createURI("http://jena.apache.org/text#query");
+
 	private Boolean regexIndexQuery = false;
 
 	public Boolean getRegexIndexQuery() {
@@ -142,7 +145,16 @@ public abstract class JenaRepository implements
 						if (tri.getPredicate().getURI()
 								.equals("http://jena.apache.org/text#query")) {
 							searchSubject = tri.getSubject();
-							ignoredSameObject = tri.getObject();
+							if (tri.getObject().isVariable()) {
+								ignoredSameObject = tri.getObject();
+							} else if (tri.getObject().isLiteral()) {
+								setQueryString(tri.getObject()
+										.getLiteralLexicalForm());
+							}
+							System.out.println("searchSubject" + searchSubject);
+							System.out.println("ignoredSameObject"
+									+ ignoredSameObject);
+
 							setRegexIndexQuery(true);
 							break;
 						}
@@ -155,20 +167,24 @@ public abstract class JenaRepository implements
 								&& !tri.getObject().equals(ignoredSameObject)) {
 							String obj = tri.getObject().toString();
 							setRegexVar(obj.replaceAll("\\?", ""));
+							System.out.println("getRegexVar" + getRegexVar());
 						}
 
 					}
-					Iterator<TriplePath> itr2 = pathBlock.iterator();
-					while (itr2.hasNext()) {
-						TriplePath tri = itr2.next();
-						if (tri.getSubject().isVariable()) {
-							if (tri.getSubject().toString().contains("??")
-									&& tri.getObject().isLiteral()) {
-								setQueryString(tri.getObject()
-										.getLiteralLexicalForm());
-							}
-						}
 
+					if (getQueryString() == null) {
+						Iterator<TriplePath> itr2 = pathBlock.iterator();
+						while (itr2.hasNext()) {
+							TriplePath tri = itr2.next();
+							if (tri.getSubject().isVariable()) {
+								if (tri.getSubject().toString().contains("??")
+										&& tri.getObject().isLiteral()) {
+									setQueryString(tri.getObject()
+											.getLiteralLexicalForm());
+								}
+							}
+
+						}
 					}
 
 				}
@@ -176,8 +192,10 @@ public abstract class JenaRepository implements
 
 			if (getRegexIndexQuery()) {
 				Var varTitle = Var.alloc(getRegexVar());
+				System.out.println("varTitle" + varTitle);
+				System.out.println("getQueryString" + getQueryString());
 				Expr expr = new E_Regex(new ExprVar(varTitle),
-						getQueryString(), "");
+						getQueryString(), "i");
 				ElementFilter filter = new ElementFilter(expr);
 				FilterAdder visitor = new FilterAdder(filter);
 				q.getQueryPattern().visit(visitor);

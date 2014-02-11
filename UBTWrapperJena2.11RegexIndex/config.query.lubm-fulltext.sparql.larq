@@ -13,7 +13,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query " engineer " .
+  ?X text:regex " engineer " .
   ?X ?p ?lit .
 }
 
@@ -25,7 +25,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query " network " .
+  ?X text:regex " network " .
   ?X ?p ?lit .
 }
 
@@ -39,7 +39,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " engineer ") .
+  ?X text:regex (ub:publicationText " engineer ") .
   ?X ub:publicationText ?lit .
 }
 
@@ -50,7 +50,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " network ") .
+  ?X text:regex (ub:publicationText " network ") .
   ?X ub:publicationText ?lit .
 }
 
@@ -64,7 +64,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " engineer | network ") .
+  ?X text:regex (ub:publicationText " engineer | network ") .
   ?X ub:publicationText ?lit .
 }
 
@@ -78,7 +78,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " network engineer ") .
+  ?X text:regex (ub:publicationText " network engineer ") .
   ?X ub:publicationText ?lit .
 }
 
@@ -92,7 +92,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:surname "^smith$") .
+  ?X text:regex (ub:surname "^smith$") .
   ?X ub:surname ?lit .
 }
 
@@ -120,7 +120,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " engineer ") .
+  ?X text:regex (ub:publicationText " engineer ") .
   ?X ub:publicationText ?lit .
   ?X rdf:type ub:Publication .
 }
@@ -135,7 +135,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X ?title
 WHERE {
-  ?X text:query (ub:publicationText " engineer ") .
+  ?X text:regex (ub:publicationText " engineer ") .
   ?X ub:publicationText ?lit .
   ?X ub:name ?title .
   ?X rdf:type ub:Publication .
@@ -151,7 +151,7 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X ?title ?fullname
 WHERE {
-  ?X text:query (ub:publicationText " engineer ") .
+  ?X text:regex (ub:publicationText " engineer ") .
   ?X ub:publicationText ?lit .
   ?X ub:name ?title .
   ?X ub:publicationAuthor ?Y .
@@ -163,88 +163,88 @@ WHERE {
 
 
 
-[lubm-RegexIndex-9]
-# All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# Number of Results: 0
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X ?Y
-WHERE {
-  ?Y text:query (ub:fullname " smith ") .
-  ?Y ub:fullname ?lity .
-
-  ?X text:query (ub:publicationText " engineer ") .
-  ?X ub:publicationText ?litx .
-
-  ?X ub:publicationAuthor ?Y .
-}
-
-
-
-[lubm-RegexIndex-10]
-# All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
-# Number of Results: 123
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X ?Y ?Z
-WHERE {
-  ?X text:query (ub:publicationText " network ") .
-  ?X ub:publicationText ?litx .
-
-  ?Y text:query (ub:publicationText " engineer ") .
-  ?Y ub:publicationText ?lity .
-
-  ?X ub:publicationAuthor ?Z .
-  ?Y ub:publicationAuthor ?Z .
-  ?Z rdf:type ub:FullProfessor .
-}
-
-
-
-[lubm-RegexIndex-11]
-# All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
-# Number of Results: 0
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT DISTINCT ?Z
-WHERE {
-  ?X text:query (ub:publicationText " network ") .
-  ?X ub:publicationText ?litx .
-
-  ?Y text:query (ub:publicationText " engineer ") .
-  ?Y ub:publicationText ?lity .
-
-  ?Z text:query (ub:fullname " smith ") .
-  ?Z ub:fullname ?litz .
-
-  ?X ub:publicationAuthor ?Z .
-  ?Y ub:publicationAuthor ?Z .
-  ?Z rdf:type ub:FullProfessor .
-}
-
-
-
-# === ADVANCED IR QUERIES ===
-
-
-
-[lubm-RegexIndex-12]
-# All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
-# Number of Results: 22
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X
-WHERE {
-  ?X text:query (ub:publicationText "( engineer.*network )|( network.*engineer )") .
-  ?X ub:publicationText ?lit .
-}
-
-
-
+# [lubm-RegexIndex-9]
+# # All resources that match the keyword 'engineer' in ub:publicationText, and that are authored by someone matching 'smith' in the ub:fullname property. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+# # Number of Results: 0
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT ?X ?Y
+# WHERE {
+#   ?Y text:regex (ub:fullname " smith ") .
+#   ?Y ub:fullname ?lity .
+# 
+#   ?X text:regex (ub:publicationText " engineer ") .
+#   ?X ub:publicationText ?litx .
+# 
+#   ?X ub:publicationAuthor ?Y .
+# }
+# 
+# 
+# 
+# [lubm-RegexIndex-10]
+# # All resources that match the keyword 'network' in ub:publicationText, and that are authored by a full professor who also authored a resource matching 'engineer' in ub:publicationText. This combines two keyword queries in one structured query. Connecting the two result sets of the keyword searches requires lookups of the semantic path between these resources.
+# # Number of Results: 123
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT ?X ?Y ?Z
+# WHERE {
+#   ?X text:regex (ub:publicationText " network ") .
+#   ?X ub:publicationText ?litx .
+# 
+#   ?Y text:regex (ub:publicationText " engineer ") .
+#   ?Y ub:publicationText ?lity .
+# 
+#   ?X ub:publicationAuthor ?Z .
+#   ?Y ub:publicationAuthor ?Z .
+#   ?Z rdf:type ub:FullProfessor .
+# }
+# 
+# 
+# 
+# [lubm-RegexIndex-11]
+# # All distinct full professors matching 'smith' in ub:fullname that authored resources that match the keyword 'network' in ub:publicationText, and also resources matching 'engineer' in ub:publicationText. This further introduces one more keyword search into the query.
+# # Number of Results: 0
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT DISTINCT ?Z
+# WHERE {
+#   ?X text:regex (ub:publicationText " network ") .
+#   ?X ub:publicationText ?litx .
+# 
+#   ?Y text:regex (ub:publicationText " engineer ") .
+#   ?Y ub:publicationText ?lity .
+# 
+#   ?Z text:regex (ub:fullname " smith ") .
+#   ?Z ub:fullname ?litz .
+# 
+#   ?X ub:publicationAuthor ?Z .
+#   ?Y ub:publicationAuthor ?Z .
+#   ?Z rdf:type ub:FullProfessor .
+# }
+# 
+# 
+# 
+# #=== ADVANCED IR QUERIES ===
+# 
+# 
+# 
+# [lubm-RegexIndex-12]
+# # All resources that match the keywords 'engineer' and 'network' in property 'ub:publicationText'. This query tests for AND boolean queries.
+# # Number of Results: 22
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT ?X
+# WHERE {
+#   ?X text:regex (ub:publicationText "( engineer.*network )|( network.*engineer )") .
+#   ?X ub:publicationText ?lit .
+# }
+# 
+# 
+# 
 # [lubm-RegexIndex-13]
 # # All resources that match the keywords 'network' but not 'engineer' in property 'ub:publicationText'. This query tests for AND NOT boolean queries.
 # # Number of Results: 991
@@ -253,23 +253,23 @@ WHERE {
 # PREFIX text: <http://jena.apache.org/text#>
 # SELECT ?X
 # WHERE {
-#   ?X text:query (ub:publicationText " network.*[^(engineer)]") .
+#   ?X text:regex (ub:publicationText " network.*[^(engineer)]") .
 #   ?X ub:publicationText ?lit .
 # }
-
-
-
-[lubm-RegexIndex-14]
-# All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
-# Number of Results: 14
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X
-WHERE {
-  ?X text:query (ub:publicationText "(( network\\W+(?:\\w+\\W+){0,8}?engineer )|( engineer\\W+(?:\\w+\\W+){0,8}?network ))") .
-  ?X ub:publicationText ?lit .
-}
+# 
+# 
+# 
+# [lubm-RegexIndex-14]
+# # All resources that contains the keywords 'network' and 'engineer' in property 'ub:publicationText', where both keywords must occur in a distance of at most 10 words. There are 14 such results in LUBMft(1).
+# # Number of Results: 14
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT ?X
+# WHERE {
+#   ?X text:regex (ub:publicationText "(( network\\W+(?:\\w+\\W+){0,8}?engineer )|( engineer\\W+(?:\\w+\\W+){0,8}?network ))") .
+#   ?X ub:publicationText ?lit .
+# }
 
 
 
@@ -281,26 +281,26 @@ PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
 PREFIX text: <http://jena.apache.org/text#>
 SELECT ?X
 WHERE {
-  ?X text:query (ub:publicationText " engineer.*? ") .
+  ?X text:regex (ub:publicationText " engineer.*? ") .
   ?X ub:publicationText ?lit .
 }
 
 
 
-[lubm-RegexIndex-16]
-# Not supported!!
-# All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
-PREFIX text: <http://jena.apache.org/text#>
-SELECT ?X
-WHERE {
-  ?X text:query (ub:publicationText "engineer[a-zA-Z]\\b") .
-  ?X ub:publicationText ?lit .
-}
-
-
-
+# [lubm-RegexIndex-16]
+# # Not supported!!
+# # All resources that match the wildcard query 'engineer?' in property 'ub:publicationText'. The query matches 'engineers', but not 'engineer'. There are 32 results in LUBMft(1).
+# PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+# PREFIX text: <http://jena.apache.org/text#>
+# SELECT ?X
+# WHERE {
+#   ?X text:regex (ub:publicationText "engineer[a-zA-Z]\\b") .
+#   ?X ub:publicationText ?lit .
+# }
+# 
+# 
+# 
 # [lubm-RegexIndex-17]
 # # All resources that match a keywords that is 80% similar to 'engineer'. Where 'engineer' has 40 results, this query has 71 in LUBMft(1).
 # # Number of Results: 71
@@ -309,7 +309,7 @@ WHERE {
 # PREFIX text: <http://jena.apache.org/text#>
 # SELECT ?X
 # WHERE {
-#   ?X text:query "engineer~0.8" .
+#   ?X text:regex "engineer~0.8" .
 #   ?X ub:publicationText ?lit .
 # }
 # 
@@ -323,7 +323,7 @@ WHERE {
 # #PREFIX text: <http://jena.apache.org/text#>
 # #SELECT ?X ?score
 # #WHERE {
-# #  (?lit ?score) text:query "engineer" .
+# #  (?lit ?score) text:regex "engineer" .
 # #  ?X ub:publicationText ?lit .
 # #}
 # 
@@ -341,7 +341,7 @@ WHERE {
 # #PREFIX text: <http://jena.apache.org/text#>
 # #SELECT ?X ?score
 # #WHERE {
-# #  (?lit ?score) text:query ("network" 10) .
+# #  (?lit ?score) text:regex ("network" 10) .
 # #  ?X ub:publicationText ?lit .
 # #}
 # 
@@ -352,7 +352,7 @@ WHERE {
 # #PREFIX text: <http://jena.apache.org/text#>
 # #SELECT ?X ?score
 # #WHERE {
-# #  (?lit ?score) text:query ("network" 0.75) .
+# #  (?lit ?score) text:regex ("network" 0.75) .
 # #  ?X ub:publicationText ?lit .
 # #}
 # 

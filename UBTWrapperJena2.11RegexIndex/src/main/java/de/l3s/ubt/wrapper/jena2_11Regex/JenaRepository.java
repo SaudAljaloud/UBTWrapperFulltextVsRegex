@@ -25,8 +25,8 @@ import org.apache.jena.query.text.TextDatasetFactory;
 import org.apache.jena.query.text.TextIndex;
 import org.apache.jena.query.text.TextIndexLucene;
 
-
 import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.core.PathBlock;
 import com.hp.hpl.jena.sparql.core.TriplePath;
@@ -62,11 +62,40 @@ public abstract class JenaRepository implements
 	private Dataset ds;
 	private Dataset ds2;
 
-	private String regexVar = null;
-	private String queryString = null;
-	final Node search = Node.createURI("http://jena.apache.org/text#query");
+
+
+	private String nameSpace = "http://jena.apache.org/text#regex";
+	private String jena_textQueryFirst = "http://www.w3.org/1999/02/22-rdf-syntax-ns#first";
+	private String jena_textQueryRest = "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest";
+	private Node publicationText = NodeFactory
+			.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#publicationText");
+	private Node firstname = NodeFactory
+			.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#firstname");
+	private Node surName = NodeFactory
+			.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#surname");
+	private Node fullName = NodeFactory
+			.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#fullname");
 
 	private Boolean regexIndexQuery = false;
+	private ArrayList<String> regexVar;
+
+	public String getRegexVar(int i) {
+		return regexVar.get(i);
+	}
+
+	public void addRegexVar(String regexVar) {
+		this.regexVar.add(regexVar);
+	}
+
+	private ArrayList<String> queryString;
+
+	public String getQueryString(int i) {
+		return queryString.get(i);
+	}
+
+	public void addQueryString(String queryString) {
+		this.queryString.add(queryString);
+	}
 
 	public Boolean getRegexIndexQuery() {
 		return regexIndexQuery;
@@ -76,22 +105,9 @@ public abstract class JenaRepository implements
 		this.regexIndexQuery = regexIndexQuery;
 	}
 
-	public String getRegexVar() {
-		return regexVar;
-	}
-
-	public void setRegexVar(String regexVar) {
-		this.regexVar = regexVar;
-	}
-
-	public String getQueryString() {
-		return queryString;
-	}
-
-	public void setQueryString(String queryString) {
-		this.queryString = queryString;
-	}
-
+	
+	
+	
 	protected abstract Dataset createModel(String... names);
 
 	protected abstract String getName();
@@ -128,6 +144,8 @@ public abstract class JenaRepository implements
 	public QueryResult issueQuery(edu.lehigh.swat.bench.ubt.api.Query query) {
 
 		log.debug("querying repository with query\n{}", query.getString());
+		queryString = new ArrayList<String>();
+		regexVar = new ArrayList<String>();
 
 		try {
 			log.info("queried repository");
@@ -140,66 +158,119 @@ public abstract class JenaRepository implements
 					Iterator<TriplePath> itr = pathBlock.iterator();
 					Node searchSubject = null;
 					Node ignoredSameObject = null;
+					Node fieldObject = null;
+					Node querySubject = null;
+					boolean fieldObjectIdeantified = false;
 					while (itr.hasNext()) {
+
 						TriplePath tri = itr.next();
-						if (tri.getPredicate().getURI()
-								.equals("http://jena.apache.org/text#query")) {
+
+						if (tri.getPredicate().getURI().equals(nameSpace)) {
+
 							searchSubject = tri.getSubject();
 							if (tri.getObject().isVariable()) {
 								ignoredSameObject = tri.getObject();
+								// System.out.println("ignoredSameObject "
+								// + ignoredSameObject);
+
+								Iterator<TriplePath> itr2 = pathBlock
+										.iterator();
+								while (itr2.hasNext()) {
+									TriplePath tri2 = itr2.next();
+									if (tri2.getSubject().equals(
+											ignoredSameObject)
+											&& tri2.getPredicate()
+													.toString()
+													.equals(jena_textQueryFirst)) {
+										fieldObject = tri2.getObject();
+										// System.out.println("fieldObject "
+										// + fieldObject);
+										fieldObjectIdeantified = true;
+
+									}
+									if (tri2.getSubject().equals(
+											ignoredSameObject)
+											&& tri2.getPredicate().toString()
+													.equals(jena_textQueryRest)) {
+										querySubject = tri2.getObject();
+										// System.out.println("querySubject "
+										// + querySubject);
+										break;
+
+									}
+								}
+								Iterator<TriplePath> itr3 = pathBlock
+										.iterator();
+								while (itr3.hasNext()) {
+									TriplePath tri3 = itr3.next();
+									if (tri3.getSubject().equals(querySubject)
+											&& tri3.getPredicate()
+													.toString()
+													.equals(jena_textQueryFirst)
+											&& tri3.getObject().isLiteral()) {
+										// System.out
+										// .println("query string "
+										// + tri3.getObject()
+										// .getLiteralLexicalForm());
+										addQueryString(tri3.getObject()
+												.getLiteralLexicalForm());
+										break;
+
+									}
+								}
+
 							} else if (tri.getObject().isLiteral()) {
-								setQueryString(tri.getObject()
+								searchSubject = tri.getSubject();
+								addQueryString(tri.getObject()
 										.getLiteralLexicalForm());
+								Iterator<TriplePath> itr4 = pathBlock
+										.iterator();
+								while (itr4.hasNext()) {
+									TriplePath tri4 = itr4.next();
+									if (tri4.getSubject().equals(searchSubject)
+											&& tri4.getObject().isVariable()) {
+										String obj = tri4.getObject()
+												.toString();
+										addRegexVar(obj.replaceAll("\\?", ""));
+										break;
+									}
+
+								}
+								break;
 							}
-							System.out.println("searchSubject" + searchSubject);
-							System.out.println("ignoredSameObject"
-									+ ignoredSameObject);
 
 							setRegexIndexQuery(true);
-							break;
+
 						}
-
-					}
-					Iterator<TriplePath> itr1 = pathBlock.iterator();
-					while (itr1.hasNext()) {
-						TriplePath tri = itr1.next();
-						if (tri.getSubject().equals(searchSubject)
-								&& !tri.getObject().equals(ignoredSameObject)) {
-							String obj = tri.getObject().toString();
-							setRegexVar(obj.replaceAll("\\?", ""));
-							System.out.println("getRegexVar" + getRegexVar());
-						}
-
-					}
-
-					if (getQueryString() == null) {
-						Iterator<TriplePath> itr2 = pathBlock.iterator();
-						while (itr2.hasNext()) {
-							TriplePath tri = itr2.next();
-							if (tri.getSubject().isVariable()) {
-								if (tri.getSubject().toString().contains("??")
-										&& tri.getObject().isLiteral()) {
-									setQueryString(tri.getObject()
-											.getLiteralLexicalForm());
-								}
+						if (fieldObjectIdeantified) {
+							if (tri.getSubject().equals(searchSubject)
+									&& tri.getPredicate().equals(fieldObject)) {
+								String obj = tri.getObject().toString();
+								addRegexVar(obj.replaceAll("\\?", ""));
+								// System.out.println("getRegexVar"
+								// + obj.replaceAll("\\?", ""));
+								fieldObjectIdeantified = false;
 							}
-
 						}
+
 					}
 
 				}
 			});
 
-			if (getRegexIndexQuery()) {
-				Var varTitle = Var.alloc(getRegexVar());
-				System.out.println("varTitle" + varTitle);
-				System.out.println("getQueryString" + getQueryString());
+			System.out.println("number of regex var " + regexVar.size());
+			System.out.println("number of query var " + queryString.size());
+			for (int i = 0; i < queryString.size(); i++) {
+				Var varTitle = Var.alloc(getRegexVar(i));
+				// System.out.println("varTitle" + varTitle);
+				// System.out.println("getQueryString" + getQueryString(i));
 				Expr expr = new E_Regex(new ExprVar(varTitle),
-						getQueryString(), "i");
+						getQueryString(i), "i");
 				ElementFilter filter = new ElementFilter(expr);
 				FilterAdder visitor = new FilterAdder(filter);
 				q.getQueryPattern().visit(visitor);
 			}
+
 			System.out.println(q);
 			QueryExecution qe = QueryExecutionFactory.create(q, ds2);
 			ResultSet rs = qe.execSelect();
@@ -287,14 +358,6 @@ public abstract class JenaRepository implements
 
 		try {
 			Directory directory = FSDirectory.open(getFulltextDir());
-			Node publicationText = Node
-					.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#publicationText");
-			Node firstname = Node
-					.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#firstname");
-			Node surName = Node
-					.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#surname");
-			Node fullName = Node
-					.createURI("http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#fullname");
 			EntityDefinition eDef = new EntityDefinition("iri",
 					"publicationText", publicationText);
 			eDef.set("firstname", firstname);
@@ -303,7 +366,6 @@ public abstract class JenaRepository implements
 			index = new TextIndexLucene(directory, eDef);
 			ds2 = TextDatasetFactory.create(ds, index);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

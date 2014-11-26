@@ -41,5 +41,5 @@ This work is licensed under the GNU General Public License (GPL).
   
 
 ## Support
-Check my profile for my email.
+Check my profile for my email.  
 Helping is not guaranteed, asking is never a problem :)
